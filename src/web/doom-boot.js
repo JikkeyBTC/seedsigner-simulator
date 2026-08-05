@@ -45,12 +45,9 @@
   // What DOOM draws, and how. RGB565 big endian is what the ST7789 panel takes
   // over SPI on the real device, so the wrapper hands over the same bytes the
   // hardware would have been sent rather than something invented for a browser.
-  // The panel the simulator draws. Its worker asks the firmware for
-  // st7789_320x240, which is the SeedSigner Plus, and the browser build of DOOM
-  // is configured for the same one. Built at the original's 240x240 it sat in
-  // the middle of this panel with black bars down both sides, which was not the
-  // device being honest about its shape, just DOOM in a box.
-  var DOOM_W = 320;
+  // The original boot-game port supplies native 240x240 RGB565 frames. JikKey's
+  // square ST7789 panel uses those bytes one-for-one, without scaling or bars.
+  var DOOM_W = 240;
   var DOOM_H = 240;
 
   // A drawn key reports that it went down and never that it came up: the shell
@@ -75,9 +72,8 @@
   // How far into the sequence the presses so far have got.
   var progress = 0;
 
-  // The panel, kept and reused. Only the square in the middle of it ever
-  // changes, so the black either side of DOOM is written once and left alone,
-  // and no frame allocates anything.
+  // The panel, kept and reused. The centering offsets remain so a future larger
+  // renderer can still hold the native square frame without scaling it.
   var panel = null;
   var panelW = 0;
   var panelH = 0;
@@ -111,9 +107,8 @@
    *
    * Converted to the same RGB the wallet's own renderer posts and handed to the
    * page's paint(), rather than drawn here: there is one thing painting that
-   * canvas and this is not a second one. Centred rather than scaled, because
-   * DOOM draws the same 320x240 panel the wallet does, so it lands on it one
-   * pixel to one pixel, with no scaling and nothing to centre.
+   * canvas and this is not a second one. Centred rather than scaled, so the
+   * native 240x240 RGB565 frame always lands one pixel to one pixel.
    */
   function onFrame(frame) {
     // A frame already in flight when stop() was called is not a reason to paint
@@ -194,6 +189,11 @@
       // that never arrives leaves a black screen, and a black screen must still
       // be a SeedSigner.
       state = "holding";
+
+      if (offsetX < 0 || offsetY < 0) {
+        unavailable("the device panel is smaller than the 240x240 boot game");
+        return;
+      }
 
       if (!scope.DoomRun) {
         unavailable("this page was built without it");

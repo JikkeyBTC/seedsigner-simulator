@@ -470,7 +470,7 @@
         firmware reaches for hardware, and each is replaced from outside it:</p>
         <ul>
           <li><strong>Display:</strong> the device's own driver renders the frames
-          and hands them to the page, which paints them at its native 320&times;240,
+          and hands them to the page, which paints them at its native 240&times;240,
           pixel for pixel.</li>
           <li><strong>Buttons:</strong> the worker sits blocked inside the wallet's
           main loop and can never answer a message, so keys cross on a
@@ -587,7 +587,7 @@
   <div id="stage">
     <div id="stage-device">
       <div id="device"></div>
-      <canvas id="screen" width="320" height="240"></canvas>
+      <canvas id="screen" width="240" height="240"></canvas>
       <!-- One band under the device for the two things that are about the
            device rather than on it: what it is doing while it boots, and which
            network it is set to. Under it rather than over it, because the band
@@ -791,7 +791,7 @@ const FIRMWARE_INFO = {
   },
 };
 
-let W = 320, H = 240;  // corrected by the worker once the renderer exists
+let W = 240, H = 240;  // corrected by the worker once the renderer exists
 const canvas = document.getElementById("screen");
 const deviceEl = document.getElementById("device");
 const ctx = canvas.getContext("2d");
@@ -1073,7 +1073,7 @@ function mountDevice(width, height) {
   deviceScreen = size;
   const device = SeedSignerDevice.render(deviceEl, {
     screenWidth: width, screenHeight: height, interactive: true, onKey: pressKey,
-    maxWidth: "68rem",   // ~1.45x the native 320x240 in the cutout
+    maxWidth: "68rem",   // the responsive shell scales from the native square panel
     card: false,         // the tray below is what says whether a card is in
   });
   device.screen.appendChild(canvas);

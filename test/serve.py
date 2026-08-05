@@ -31,6 +31,10 @@ class IsolatedHandler(SimpleHTTPRequestHandler):
     # octet-stream and the wallet would never boot.
     extensions_map = {
         **SimpleHTTPRequestHandler.extensions_map,
+        # Windows can source this mapping from the registry, where .js is
+        # commonly registered as text/plain. Browsers reject Pyodide's
+        # importScripts() unless the response is explicitly JavaScript.
+        ".js": "text/javascript",
         ".wasm": "application/wasm",
         ".mjs": "text/javascript",
         ".json": "application/json",

@@ -173,7 +173,7 @@ sys.path.insert(0, "/wallet")
 # SeedSigner OS, so both of these are configuration, the way a configured device
 # would have them, and nothing under seedsigner/ is touched to get them.
 #
-#   display_config  the SeedSigner Plus panel, which is the screen drawn here.
+#   display_config  the compact square ST7789 panel used by JikKey.
 #   network         Testnet, where SeedSigner's own default is Mainnet. Nothing
 #                   in a browser tab should be pointed at real coins, and the
 #                   rest of the page spends its time saying so, so mainnet is
@@ -187,7 +187,7 @@ sys.path.insert(0, "/wallet")
 import os, json
 os.chdir("/wallet")
 with open("/wallet/settings.json", "w") as handle:
-    json.dump({"display_config": "st7789_320x240", "network": "T"}, handle)
+    json.dump({"display_config": "st7789_240x240", "network": "T"}, handle)
 
 # --- no real threads in the browser -----------------------------------------
 class _NoThread:

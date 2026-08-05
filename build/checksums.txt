@@ -46,7 +46,7 @@
 4287260eb4415c10e9888b4ed03932201b45a9c0efef0f750120fbc49876c65c  src/shims/browser_display.py
 b07b92557fd4b24087f6efedb18507e1e4f3a305882a97d1ab8f23932932c00c  src/shims/browser_qr.py
 0243ccf633097906b763839cd4b2d9f92fccd042bac1fd11ee7be60f31e78687  src/web/apple-touch-icon.png
-423906a4f230412cb756c806066760157c1ae9f19e69ccaf59f120e483b6ee05  src/web/doom-boot.js
+a54dd3e15aaa55d961cf63c71b21aa7617de2088f86a3ffa99f04e8c17bb1d1c  src/web/doom-boot.js
 1ebb8267bb112587c9739a7f30fd9197c3e0137a0fcd4677f6a8677b6fa307f5  src/web/icon-192.png
 2c740b578143c67bbca1f950c33fe62d2a06fd22d5c0a7adf58348dc648e09bf  src/web/icon-512.png
 69c5281f2a9000d5f9d84b9cbec1bdc14bea23a4a68c1488e00192b1a24a00d9  src/web/index.html
@@ -63,8 +63,8 @@ aec81b459d4e3856885fca04b497474227396ab793daedf402fd80f7b9fcc337  src/web/jsQR.j
 ca6cb3f03b61b1c77d628b73395a181245201fbbf9e2c93dd4e8b5b5b3e319e8  src/web/wallet-coordinator.js
 c29460f4a497594f8a8cb74207ab13cd6c27006a9f28a5ab16a1719845092354  src/web/wallet-track.js
 a832af649496da0090f986a62f48f6d1e340975ebaa3707b82ec07542073f797  src/web/wallet-tutorial.js
-a8f9f6a25aa980412e52f0e712911b3f3e52e3176faeb7adca406356c026acb4  src/web/wallet-worker.js
-51605d38b38913194a6e5fd624bc8174004db7eb05eb7ae5906f05ba6da96a95  src/web/wallet.html
+c7fd536faae39916f3b5f00a817f60f7d35f797d47d080780ae6bf2dc9ec0e11  src/web/wallet-worker.js
+a815d00e9bf4389306ff7157fbe5850421fb243d6c7df6d06b14c36d50c12d10  src/web/wallet.html
 
 # The stand-in packages, which build/build-wallet-zip.sh copies out of the working
 # tree and into a wallet zip whole. Every other input to that zip is pinned by a
