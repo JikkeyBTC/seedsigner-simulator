@@ -36,3 +36,6 @@ src/web/doom.wasm
 src/web/doom-run.js
 src/web/*.wad
 build/out/doom/
+
+# Local isolated feature worktrees.
+/.worktrees/
