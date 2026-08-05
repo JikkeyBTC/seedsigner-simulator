@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>SeedSigner simulator</title>
+<title>JikKey Simulator</title>
 <meta name="description" content="Real SeedSigner device firmware running in a browser tab. A simulator, not a wallet.">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#07111f">
+<link rel="icon" href="jikkey-logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="jikkey-logo.svg">
+<meta name="theme-color" content="#0076ff">
 <style>
   /* Deliberately plain, and deliberately self-contained: the page's own CSP
      forbids anything external, so no webfonts and no third-party anything. The
@@ -21,7 +21,7 @@
     --line: #2a2f36;
     --text: #d7dbe0;
     --muted: #7c848f;
-    --accent: #f7931a;
+    --accent: #0076ff;
   }
   * { box-sizing: border-box; }
   body {
@@ -30,6 +30,9 @@
     font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   h1 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 .5rem; font-weight: 600; }
+  .brand-title { display: flex; align-items: center; gap: .7rem; }
+  .brand-logo { display: block; width: auto; height: 1.8rem; }
+  .brand-title span { color: #fff; font-size: .82em; font-weight: 500; }
   h2 { font-size: 1.05rem; margin: 2.5rem 0 .75rem; font-weight: 600; }
   p { margin: 0 0 1rem; }
   a { color: var(--accent); }
@@ -76,7 +79,7 @@
 </head>
 <body>
 
-<h1>SeedSigner simulator</h1>
+<h1 class="brand-title"><img class="brand-logo" src="jikkey-logo.svg" alt="JikKey"><span>Simulator</span></h1>
 <p class="lead">Real SeedSigner device firmware, the actual Python off the device,
 running in this browser tab. Its screen is a canvas, its buttons are your keyboard,
 and its camera is your webcam.</p>

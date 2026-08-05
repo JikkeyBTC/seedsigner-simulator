@@ -24,8 +24,8 @@
 // file here is enough to install this worker again, and install adds the new
 // entries to the cache that is already there. Bump it when something cached
 // must be thrown away, not when something new is added.
-const VERSION = "sim-v7";
-const CACHE = "seedsignersim-" + VERSION;
+const VERSION = "sim-v8";
+const CACHE = "jikkeysim-" + VERSION;
 
 // Small enough to fetch up front so a first-run offline load still works.
 //
@@ -71,9 +71,7 @@ const SHELL = [
   "./browser_qr.py",
   "./browser_display.py",
   "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./apple-touch-icon.png",
+  "./jikkey-logo.svg",
 ];
 
 // Genuinely immutable things only. wallet.zip used to be listed here and is
@@ -103,7 +101,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const names = await caches.keys();
     await Promise.all(names
-      .filter((n) => n.startsWith("seedsignersim-") && n !== CACHE)
+      .filter((n) => (n.startsWith("jikkeysim-") || n.startsWith("seedsignersim-")) && n !== CACHE)
       .map((n) => caches.delete(n)));
     await self.clients.claim();
   })());
