@@ -9,7 +9,7 @@ Rebrand the existing MIT-licensed SeedSigner and ShieldSigner simulator as JikKe
 
 ## Source references
 
-- Simulator repository: `C:/Users/Admin/GIT/seedsigner-simulator`
+- Simulator repository: the current repository root
 - Product cover: `D:/스마트스토어/Seedsigner_HAT/양산/final/cover.step`
 - JikKey vector logo: `D:/스마트스토어/seedsigner/상표관련/로고/직키로고/svg/svg_output/logo_7.svg`
 - JikKey raster logo reference: `D:/스마트스토어/seedsigner/상표관련/로고/직키로고/직키로고-01.png`
