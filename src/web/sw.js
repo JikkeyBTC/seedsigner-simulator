@@ -41,6 +41,7 @@ const SHELL = [
   "./wallet-worker.js",
   "./wallet-camera.js",
   "./wallet-cards.js",
+  "./wallet-touch.js",
   "./wallet-coordinator.js",
   "./wallet-track.js",
   "./seedsigner-device.js",
@@ -77,6 +78,7 @@ const SHELL = [
   "./browser_qr.py",
   "./browser_display.py",
   "./browser_hd.py",
+  "./browser_touch.py",
   "./manifest.json",
   "./jikkey-logo.svg",
 ];

@@ -568,6 +568,7 @@
            why the wallet is not up. Filled in by the boot below and emptied
            again the moment the wallet has the device. -->
       <p class="hint" id="doom-hint"></p>
+      <p class="hint touch-hint">Tap a menu to open it. Swipe up or down to move through the list.</p>
       <!-- Why the device has stopped answering, when the reason is that its
            camera has gone quiet. Filled in by the camera channel and emptied
            again the moment frames come back. -->
@@ -623,6 +624,7 @@
 <script src="seedsigner-device.js"></script>
 <script src="wallet-camera.js"></script>
 <script src="wallet-cards.js"></script>
+<script src="wallet-touch.js"></script>
 <script src="qr-encode.js"></script>
 <script src="ur-decode.js"></script>
 <script src="signet-coordinator.js"></script>
@@ -991,6 +993,16 @@ function sendKey(channel) {
   Atomics.notify(keyBuffer, 0);
 }
 
+let touchFrameEpoch = null;
+WalletTouch.mount(canvas, {
+  frame: () => ({ epoch: touchFrameEpoch, width: W, height: H }),
+  send: (channel) => {
+    // The shared channel has one slot. Keep a touch from overwriting a key
+    // that the wallet has not consumed yet.
+    if (Atomics.load(keyBuffer, 0) === 0) sendKey(channel);
+  },
+});
+
 // The same eight channels the other way round, for the name a press is counted
 // under. KEYMAP cannot be inverted into this: it has two spellings of select.
 const KEY_NAMES = [null, "up", "down", "left", "right", "select", "key1", "key2", "key3"];
@@ -1210,6 +1222,8 @@ function startWallet() {
       // percentages, so both stay registered at any viewport width.
       mountDevice(W, H);
     } else if (type === "frame") {
+      touchFrameEpoch = event.data.touchEpoch ?? null;
+      document.body.classList.toggle("touch-ready", touchFrameEpoch !== null);
       paint(event.data.frame, event.data.width, event.data.height);
       if (statusEl.className !== "ready") {
         statusEl.textContent = "";

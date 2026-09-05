@@ -90,6 +90,11 @@ body.solo #fullscreen { right: 7rem; }
 @media (prefers-reduced-motion: reduce) {
   #cardtray .cardtray-card { transition: none; }
 }
+.touch-hint { display: none; margin: 0; }
+@media (any-pointer: coarse) {
+  #screen { touch-action: none; }
+  body.touch-ready:not(.solo) .touch-hint { display: block; }
+}
 @media (max-width: 36rem) {
   header { padding: 0 6.15rem 0 0; justify-content: flex-start; gap: .45rem; }
   .brand-title { gap: .4rem; flex-wrap: wrap; max-width: calc(100% - 1.8rem); }

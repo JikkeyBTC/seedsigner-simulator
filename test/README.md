@@ -99,10 +99,12 @@ inserting it *without* also reaching the wallet's key handler underneath.
 **`test_device.py`**: the device art as a control, on a phone. Two claims, and
 neither of them needs the wallet, so this file costs seconds.
 
-The screen is not a button. It used to be the select key, on the grounds that it
+The standalone device art's screen is not a button. It used to be the select key, on the grounds that it
 is the biggest target on the shell, and on a phone that meant a tap anywhere on
 the home menu opened the camera. A SeedSigner has no touchscreen, so neither has
-this. The proof is a second device rendered on the page with an `onKey` that only
+the standalone art. The wallet page separately mounts mobile touch assistance,
+which resolves a tapped control through the active firmware screen's geometry.
+The proof here is a second device rendered on the page with an `onKey` that only
 counts, driven by real touch events through the DevTools protocol: a tap on the
 screen counts nothing, a tap on a key counts exactly one -- not two, which is
 what a device answering both the pointer event and the mouse event the browser

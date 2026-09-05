@@ -12,6 +12,7 @@ let keyBuffer = null; // Int32Array over SharedArrayBuffer: [state, keycode]
 let camera = null;    // the page's half of the camera channel, see wallet-camera.js
 let cards = null;     // the page's card tray, see wallet-cards.js
 let debug = false;    // ?debug=1 on the page; otherwise js_log says nothing
+let touchEpoch = 0;
 
 // Which of the two built wallet zips to unpack. The page decides; see
 // FIRMWARES in wallet.html for what the names mean and how one is chosen.
@@ -97,6 +98,11 @@ async function boot(width, height) {
   if (!hdResponse.ok) throw new Error(`Could not load display renderer: ${hdResponse.status}`);
   pyodide.FS.writeFile("/wallet/browser_hd.py", await hdResponse.text());
 
+  const touchResponse = await fetch("browser_touch.py");
+  if (!touchResponse.ok) throw new Error(`Could not load touch navigation: ${touchResponse.status}`);
+  pyodide.FS.writeFile("/wallet/browser_touch.py", await touchResponse.text());
+  pyodide.globals.set("js_touch_epoch", (epoch) => { touchEpoch = Number(epoch); });
+
   post("status", { stage: "starting", message: "starting wallet…" });
 
   // Frames come back through this callback rather than being polled.
@@ -105,7 +111,7 @@ async function boot(width, height) {
     const raw = bytes && typeof bytes.toJs === "function" ? bytes.toJs() : bytes;
     const copy = new Uint8Array(raw);
     if (bytes && typeof bytes.destroy === "function") bytes.destroy();
-    self.postMessage({ type: "frame", frame: copy, width: frameWidth, height: frameHeight }, [copy.buffer]);
+    self.postMessage({ type: "frame", frame: copy, width: frameWidth, height: frameHeight, touchEpoch }, [copy.buffer]);
   });
 
   // Dropped here rather than on the page so the messages are not even built
@@ -429,10 +435,20 @@ BUTTON_NAMES = [None, "KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT",
                 "KEY_PRESS", "KEY1", "KEY2", "KEY3"]
 BUTTON_VALUES = [None] + [getattr(HardwareButtonsConstants, n) for n in BUTTON_NAMES[1:]]
 
+import browser_touch
+browser_touch.install(js_touch_epoch)
+
+def _resolve_input(index):
+    try:
+        return browser_touch.resolve(index)
+    except Exception:
+        # A stale/unsupported touch must never interrupt the firmware.
+        return 0
+
 def _wait_for(self, keys=[]):
     js_log(f'wait_for keys={keys!r}')
     while True:
-        index = js_wait_for_key()
+        index = _resolve_input(js_wait_for_key())
         if index < 1 or index >= len(BUTTON_VALUES):
             continue
         value = BUTTON_VALUES[index]
@@ -457,7 +473,7 @@ _PENDING_KEYS = []  # [value, times offered]
 _MAX_OFFERS = 4
 
 def _check_for_low(self, key=None, keys=None):
-    index = js_peek_key()
+    index = _resolve_input(js_peek_key())
     if 1 <= index < len(BUTTON_VALUES):
         _PENDING_KEYS.append([BUTTON_VALUES[index], 0])
 
@@ -476,7 +492,7 @@ HardwareButtons.get_instance = classmethod(_get_instance)
 HardwareButtons.wait_for = _wait_for
 HardwareButtons.update_last_input_time = _update_last_input_time
 def _poll_button():
-    index = js_peek_key()
+    index = _resolve_input(js_peek_key())
     if 1 <= index < len(BUTTON_VALUES):
         _PENDING_KEYS.append([BUTTON_VALUES[index], 0])
     return _PENDING_KEYS.pop(0)[0] if _PENDING_KEYS else None
@@ -517,6 +533,7 @@ _orig_run = BaseScreen._run
 
 def _traced_display(self):
     js_log(f"display() enter: {type(self).__name__}")
+    previous_touch_screen = browser_touch.enter(self)
     try:
         result = _orig_display(self)
         js_log(f"display() exit: {type(self).__name__} -> {result!r}")
@@ -524,6 +541,8 @@ def _traced_display(self):
     except BaseException as exc:
         js_log(f"display() RAISED in {type(self).__name__}: {type(exc).__name__}: {exc}")
         raise
+    finally:
+        browser_touch.leave(previous_touch_screen)
 
 def _traced_run(self):
     js_log(f"_run() enter: {type(self).__name__}")

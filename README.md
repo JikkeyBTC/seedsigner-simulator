@@ -69,8 +69,10 @@ the page cannot use `SharedArrayBuffer` and the wallet never starts.
 load the page runs offline.
 
 Arrow keys move, Enter selects, `1` `2` `3` are the three side buttons. You can
-also press the buttons drawn on the device. The screen is not one of them: a
-SeedSigner has no touchscreen, and neither has this.
+also press the buttons drawn on the device. On a touchscreen, tap a visible menu
+button, back icon or keyboard key directly. Swipe up or down to move through a
+list; horizontal swipes send the left or right button. This touch assistance is
+a browser convenience; the physical device uses its hardware buttons.
 
 On a phone, **Fill the screen** under the device gives it the whole viewport and
 lays it along the phone's long side, which is the only way a landscape shell

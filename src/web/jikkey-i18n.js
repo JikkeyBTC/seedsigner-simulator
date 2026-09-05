@@ -64,6 +64,7 @@
     "stock, SeedSigner as its own project publishes it, which is what a plain device runs": "stock, SeedSigner 프로젝트의 기본 펌웨어",
     "smartcard, the 3rdIteration fork of SeedSigner, a third party fork that adds SeedKeeper and Satochip cards": "smartcard, SeedKeeper와 Satochip을 추가한 3rdIteration의 외부 포크",
     "Fill the screen": "전체 화면으로 보기",
+    "Tap a menu to open it. Swipe up or down to move through the list.": "메뉴를 눌러 열어 보세요. 위아래로 쓸어 목록을 이동할 수 있어요.",
     "Back to the page": "원래 화면으로 돌아가기",
     "starting…": "시작하고 있어요…",
     "loading Python…": "실행 환경을 준비하고 있어요…",
