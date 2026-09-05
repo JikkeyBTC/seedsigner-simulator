@@ -47,6 +47,8 @@ const SHELL = [
   "./jikkey-i18n.js",
   "./jikkey-theme.css",
   "./jikkey-suede.svg",
+  "./jikkey-suede-bright.png",
+  "./jikkey-card-photo.png",
   "./jikkey-logo.png",
   // The boot itself, and the placeholder that stands in for DOOM. Both are
   // small and both are on every load. What is deliberately not here is DOOM:

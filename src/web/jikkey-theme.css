@@ -1,12 +1,13 @@
 /* The stage is suede; the device art keeps its own geometry and materials. */
 :root {
-  --suede-color: #b85f2c;
-  --suede-image: url("jikkey-suede.svg"), radial-gradient(ellipse at 22% 8%, #df945177, transparent 68%), linear-gradient(135deg, #bd6932, #a94f25);
+  --suede-color: #ff8508;
+  --suede-image: url("jikkey-suede-bright.png");
 }
 html { min-height: 100%; background: var(--suede-color); }
 body {
   min-height: 100svh; box-sizing: border-box;
   background-color: var(--suede-color); background-image: var(--suede-image);
+  background-size: 640px 640px;
   color: #24180f;
   font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", ui-sans-serif, system-ui, sans-serif;
   word-break: keep-all; overflow-wrap: anywhere;
@@ -38,11 +39,56 @@ header { width: min(68rem, 100%); position: relative; min-height: 2.8rem; paddin
 #getone { border-color: #70401e66; }
 #getone a { color: #24180f; }
 #getone a:hover { color: #000; }
-body.solo::before { background-color: var(--suede-color); background-image: var(--suede-image); }
+body.solo::before { background-color: var(--suede-color); background-image: var(--suede-image); background-size: 640px 640px; }
 body.solo #language-switch { position: fixed; z-index: 61; top: .4rem; right: .4rem; left: auto; transform: none; }
 body.solo #fullscreen { right: 7rem; }
 @media (max-width: 61.99rem) {
-  body.paired #stage-device { background-color: var(--suede-color); background-image: var(--suede-image); }
+  body.paired #stage-device { background-color: var(--suede-color); background-image: var(--suede-image); background-size: 640px 640px; }
+}
+/* Reuse the supplied photograph unchanged, framing just its physical card.
+   The existing three buttons still own every input and card state. */
+#cardtray { width: min(52rem, 100%); }
+#cardtray .cardtray { gap: 1.15rem; font-family: inherit; }
+#cardtray .cardtray-reader { box-sizing: border-box; width: min(27rem, 100%); }
+#cardtray .cardtray-row { width: 100%; gap: 1.2rem; }
+#cardtray .cardtray-cell { width: auto; flex: 1 1 0; gap: .65rem; }
+#cardtray .cardtray-card {
+  position: relative; display: block; width: 100%; aspect-ratio: 694 / 457;
+  padding: 0; border: 0; border-radius: 4.6% / 7%; isolation: isolate;
+  color: #fff6e7; background: #161513;
+  box-shadow: 0 8px 14px #8a360b40, 0 2px 3px #60280555;
+}
+#cardtray .cardtray-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: url("jikkey-card-photo.png") 50.9% 49.3% / 180.7% 274.4% no-repeat;
+  pointer-events: none;
+}
+#cardtray .cardtray-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px #78300b55; }
+#cardtray .cardtray-card[aria-pressed="true"] {
+  transform: translateY(-7px); outline: 2px solid #fff3d8; outline-offset: 3px;
+  box-shadow: 0 13px 22px #78300b66;
+}
+#cardtray .cardtray-card:focus-visible { outline: 3px solid #fff3d8; outline-offset: 4px; }
+#cardtray .cardtray-top { position: absolute; top: 13%; left: 8%; }
+#cardtray .cardtray-top svg { display: none; }
+#cardtray .cardtray-in { font-size: .7rem; font-weight: 700; color: #ffd799; letter-spacing: .06em; }
+#cardtray .cardtray-name { position: absolute; top: 15%; right: 9%; font-size: 1.35rem; letter-spacing: -.03em; font-weight: 600; }
+#cardtray .cardtray-pill {
+  position: absolute; right: 9%; bottom: 23%; max-width: 48%;
+  padding: .14rem .5rem; font-size: .75rem; border-color: #5c5549;
+  background: #181612d9; color: #e2d8c7;
+}
+#cardtray .cardtray-tries { position: absolute; right: 9%; bottom: 8%; max-width: 82%; color: #d1c2aa; font-size: .7rem; }
+#cardtray .cardtray-kind { min-height: 2.35rem; font-size: .82rem; border-radius: 7px; color: #eadcca; background: #28211b; border-color: #5c3f26; }
+#cardtray .cardtray-kind:disabled { opacity: .75; }
+@media (max-width: 40rem) {
+  #cardtray .cardtray-row { flex-direction: column; width: min(21rem, 100%); gap: 1.2rem; }
+  #cardtray .cardtray-cell { flex: none; width: 100%; }
+  #cardtray .cardtray-name { font-size: 1.55rem; }
+  #cardtray .cardtray-pill { font-size: .85rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cardtray .cardtray-card { transition: none; }
 }
 @media (max-width: 36rem) {
   header { padding: 0 6.15rem 0 0; justify-content: flex-start; gap: .45rem; }
