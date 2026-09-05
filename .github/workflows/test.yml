@@ -61,7 +61,7 @@ jobs:
 
       - name: Install Playwright
         run: |
-          pip install playwright==1.47.0
+          pip install playwright==1.47.0 Pillow==10.2.0
           playwright install --with-deps chromium
 
       - name: Run the suite

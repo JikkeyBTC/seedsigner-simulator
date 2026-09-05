@@ -24,7 +24,7 @@ def main() -> int:
                   "getComputedStyle(document.documentElement)"
                   ".getPropertyValue('--accent').trim().toLowerCase()") == "#0076ff")
 
-        page.goto(f"{harness.BASE_URL}/wallet.html?firmware=stock",
+        page.goto(f"{harness.BASE_URL}/wallet.html?firmware=stock&lang=en",
                   wait_until="domcontentloaded")
         check("simulator title is JikKey", page.title() == "JikKey Simulator", page.title())
         check("simulator shows the supplied logo",

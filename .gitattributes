@@ -1,0 +1,4 @@
+# Served/build inputs must hash identically on Windows and Linux.
+src/** text=auto eol=lf
+build/*.sh text eol=lf
+build/checksums.txt text eol=lf

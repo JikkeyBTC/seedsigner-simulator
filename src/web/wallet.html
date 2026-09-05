@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="jikkey-logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="jikkey-logo.svg">
-<meta name="theme-color" content="#0076ff">
+<meta name="theme-color" content="#b85f2c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="JikKey">
 <style>
@@ -142,7 +142,7 @@
   }
   #screen {
     display: block; width: 100%; height: 100%;
-    image-rendering: pixelated; background: #000;
+    image-rendering: auto; background: #000;
   }
   /* Out of the flow entirely, in the band the network label already occupies,
      and at the other end of it. Reserving a line for this was the obvious way to
@@ -438,10 +438,16 @@
     #build dd { margin: 0 0 .5rem; }
   }
 </style>
+<link rel="stylesheet" href="jikkey-theme.css">
+<script src="jikkey-i18n.js"></script>
 </head>
 <body>
   <header>
-    <h1 class="brand-title"><img class="brand-logo" src="jikkey-logo.svg" alt="JikKey"><span>Simulator</span></h1>
+    <h1 class="brand-title"><span class="brand-logo-crop"><img class="brand-logo" src="jikkey-logo.png" alt="JikKey" width="251" height="251"></span><span class="brand-name">Simulator</span></h1>
+    <div id="language-switch" role="group" aria-label="Language">
+      <button type="button" data-language="ko" lang="ko" aria-pressed="true" aria-label="한국어">한</button>
+      <button type="button" data-language="en" lang="en" aria-pressed="false" aria-label="English">EN</button>
+    </div>
     <!-- One panel, not two.
 
          It used to be split: an "i" that said what the simulator is, and a
@@ -458,70 +464,16 @@
     <details id="about">
       <summary aria-label="About this simulator" title="About this simulator">i</summary>
       <div>
-        <p><strong>This is device firmware, not a re-creation of it.</strong> The
-        actual Python that runs on a SeedSigner runs here, executed by Pyodide
-        (CPython compiled to WebAssembly) in a Web Worker. The wallet's own code
-        is untouched: nothing in it is patched, and the pinned release it is built
-        from is rebuilt below rather than pasted in. Two builds are on offer,
-        stock SeedSigner and the 3rdIteration smartcard fork, and the control
-        under the device says which is running and switches between them.</p>
-
-        <p>What a browser cannot provide is replaced at the four points where the
-        firmware reaches for hardware, and each is replaced from outside it:</p>
+        <p><strong>Try a SeedSigner in your browser.</strong> Its Python firmware runs locally with Pyodide. The simulator provides the display, buttons, camera and optional smartcards.</p>
+        <p><strong>Choose your firmware below the device.</strong> SeedSigner is the original release. ShieldSigner adds SeedKeeper and Satochip support. DoomSigner opens DOOM before the smartcard wallet.</p>
         <ul>
-          <li><strong>Display:</strong> the device's own driver renders the frames
-          and hands them to the page, which paints them at its native 240&times;240,
-          pixel for pixel.</li>
-          <li><strong>Buttons:</strong> the worker sits blocked inside the wallet's
-          main loop and can never answer a message, so keys cross on a
-          SharedArrayBuffer and wake it with Atomics.</li>
-          <li><strong>Camera:</strong> your webcam, through getUserMedia. SeedSigner
-          reads QR codes with pyzbar, a C library with no WebAssembly build, so the
-          decode happens in the browser and the bytes reach the unmodified decoder
-          exactly as pyzbar would have returned them.</li>
-          <li id="about-smartcard"><strong>Smartcard:</strong> simulated SeedKeeper
-          and Satochip cards answering real APDUs, because browsers have no
-          smartcard API at all. The fork only; stock has no card code to answer.</li>
+          <li><strong>Display and buttons:</strong> use the device buttons, or the arrow keys, Enter and side keys 1, 2, 3.</li>
+          <li><strong>Camera:</strong> scanning uses your webcam. In the wallet and walkthrough, QR codes pass between the on-page screens without a webcam.</li>
+          <li id="about-smartcard"><strong>Smartcards:</strong> simulated SeedKeeper and Satochip cards respond to the firmware's card commands.</li>
         </ul>
-
-        <p><strong>Driving it.</strong> Click the device's own buttons, or use the
-        keyboard: the arrows move, Enter selects, and 1, 2 and 3 are the three
-        side buttons.</p>
-
-        <p><strong>Nothing leaves your browser.</strong> The wallet has no network
-        of any kind, and this page's content security policy names exactly one
-        other origin it may reach: <code>signet.bitsaga.be</code>, the faucet and
-        chain endpoints of Bitsaga Signet, which nothing asks anything until you
-        open the simulator wallet or start the multisig tutorial.</p>
-
-        <p><strong>That one origin is mine.</strong> Bitsaga Signet is a Bitcoin
-        test network I run, and it exists so that the simulator wallet and the
-        multisig tutorial can finish:</p>
-        <ul>
-          <li><strong>What it is:</strong> a signet with Testnet address prefixes,
-          a faucet, and a block every thirty seconds, so a wallet can be funded and
-          a spend can be watched into a block in about a minute rather than
-          whenever a public test network gets round to it. Its coins exist only
-          there, cannot be sold or sent to anyone, and are worth nothing.</li>
-          <li><strong>What this page asks it:</strong> only the two things a browser
-          cannot do for itself, which are seeing the chain and reaching the network.
-          The wallet is built, the addresses derived, the PSBT assembled and the
-          transaction finalised here in the tab; Signet is asked for the faucet
-          payment, for what a list of addresses holds, for whether a transaction
-          has made it into a block, and to relay the finished one. No key, xpub
-          or descriptor is ever sent to it, and the device's own firmware never
-          talks to it at all.</li>
-        </ul>
-
-        <p><strong>It is still a simulator</strong>, running in a tab on an
-        ordinary computer, with no secure element and no air gap. Treat every key
-        it shows as public and never type a seed phrase you rely on. Mainnet works
-        here exactly as it does on hardware, and that is the danger rather than a
-        feature: on Mainnet this page derives the real mainnet account keys and
-        produces valid mainnet signatures. It sits in the device's own Settings
-        and Advanced menus where it always has, neither hidden nor recommended,
-        and the multisig tutorial has no use for it, because Bitsaga Signet does
-        the whole thing.</p>
+        <p><strong>Practice with test coins.</strong> Bitsaga Signet is a separate Bitcoin test network with a faucet and blocks about every 30 seconds. Its coins have no monetary value.</p>
+        <p><strong>Keys stay in this browser.</strong> The firmware does not access the network. Opening the wallet or starting the walkthrough connects the page to <code>signet.bitsaga.be</code> for test coins, address balances, transaction confirmations and broadcasting. Keys, xpubs and descriptors are never sent there.</p>
+        <p><strong>This browser is not a secure wallet.</strong> There is no secure element or air gap. Treat every seed entered here as public. Mainnet derives real mainnet keys and valid signatures, so never use a seed that protects real funds.</p>
 
         <div id="build">
           <h3>What is running</h3>
@@ -1079,14 +1031,25 @@ function mountDevice(width, height) {
   device.screen.appendChild(canvas);
 }
 
-function paint(bytes) {
+let frameImage = null;
+function paint(bytes, frameWidth = W, frameHeight = H) {
   // Guard against a stride mismatch painting garbage: the byte count is
   // authoritative about the frame's real size.
-  if (bytes.length !== W * H * 3) {
-    console.warn(`frame is ${bytes.length} bytes, expected ${W * H * 3}`);
+  if (!Number.isInteger(frameWidth) || !Number.isInteger(frameHeight) ||
+      frameWidth < 1 || frameHeight < 1 || frameWidth > 4096 || frameHeight > 4096 ||
+      bytes.length !== frameWidth * frameHeight * 3) {
+    console.warn(`invalid frame: ${bytes.length} bytes, ${frameWidth}x${frameHeight}`);
     return;
   }
-  const frame = ctx.createImageData(W, H);
+  // Backing pixels may be denser than the emulated panel. W/H and the shell
+  // remain native coordinates, so high-resolution output never remounts it.
+  if (canvas.width !== frameWidth || canvas.height !== frameHeight) {
+    canvas.width = frameWidth; canvas.height = frameHeight;
+  }
+  if (!frameImage || frameImage.width !== frameWidth || frameImage.height !== frameHeight) {
+    frameImage = ctx.createImageData(frameWidth, frameHeight);
+  }
+  const frame = frameImage;
   for (let src = 0, dst = 0; src < bytes.length; src += 3, dst += 4) {
     frame.data[dst] = bytes[src];
     frame.data[dst + 1] = bytes[src + 1];
@@ -1242,11 +1205,12 @@ function startWallet() {
     if (type === "size") {
       W = event.data.width; H = event.data.height;
       canvas.width = W; canvas.height = H;
+      canvas.dataset.logicalWidth = W; canvas.dataset.logicalHeight = H;
       // No inline size: the device's screen cutout drives the canvas, in
       // percentages, so both stay registered at any viewport width.
       mountDevice(W, H);
     } else if (type === "frame") {
-      paint(event.data.frame);
+      paint(event.data.frame, event.data.width, event.data.height);
       if (statusEl.className !== "ready") {
         statusEl.textContent = "";
         statusEl.className = "ready";

@@ -509,7 +509,15 @@
   /** Whatever QR is on the device's screen, read with the page's own jsQR. */
   Wallet.prototype.readDevice = function () {
     if (!scope.jsQR || !this.screen) return null;
-    var context = this.screen.getContext("2d");
+    // Decode the complete logical QR area, not its top-left backing pixels.
+    if (!this.deviceReaderCanvas) {
+      this.deviceReaderCanvas = document.createElement("canvas");
+      this.deviceReaderCanvas.width = this.deviceReaderCanvas.height = 240;
+    }
+    var context = this.deviceReaderCanvas.getContext("2d", {willReadFrequently: true});
+    context.imageSmoothingEnabled = false;
+    var side = Math.min(this.screen.width, this.screen.height);
+    context.drawImage(this.screen, 0, 0, side, side, 0, 0, 240, 240);
     var image = context.getImageData(0, 0, 240, 240);
     var found = scope.jsQR(image.data, image.width, image.height);
     return found && found.data ? found.data : null;

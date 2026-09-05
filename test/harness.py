@@ -98,6 +98,9 @@ def wallet_url(page="wallet.html", **params):
     params.setdefault("debug", "1")
     params.setdefault("wallet", "1")
     params.setdefault("firmware", FIRMWARE)
+    # Existing firmware/protocol tests assert English companion copy. Website
+    # default Korean and live switching have dedicated i18n tests.
+    params.setdefault("lang", "en")
     return f"{BASE_URL}/{page}?{urlencode(params)}"
 
 
@@ -119,7 +122,7 @@ def firmware_artifact(name):
 
 
 def save_screen(page, path):
-    """Write the device's screen, at the 320x240 the wallet drew it.
+    """Write the device's high-resolution display output without page chrome.
 
     Not a screenshot. A screenshot of the page also holds the title, the warning
     box, the card tray and the hint line, all of them rendered with whatever

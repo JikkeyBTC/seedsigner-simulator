@@ -442,8 +442,10 @@
   Tutorial.prototype.mirrorDevice = function () {
     this.painter.fillStyle = "#0b0c0e";
     this.painter.fillRect(0, 0, 640, 480);
-    // The device draws a QR into the left 240 by 240 of its 320 by 240 screen.
-    this.painter.drawImage(this.screen, 0, 0, 240, 240, 80, 0, 480, 480);
+    // Use the complete square QR area, independent of backing pixel density.
+    var side = Math.min(this.screen.width, this.screen.height);
+    this.painter.imageSmoothingEnabled = false;
+    this.painter.drawImage(this.screen, 0, 0, side, side, 80, 0, 480, 480);
     this.painter.strokeStyle = "#f7931a";
     this.painter.lineWidth = 6;
     this.painter.strokeRect(60, 20, 520, 440);
@@ -468,7 +470,14 @@
   /** Read whatever QR is on the device's screen, with the page's own jsQR. */
   Tutorial.prototype.readDevice = function () {
     if (!scope.jsQR) return null;
-    var context = this.screen.getContext("2d");
+    if (!this.deviceReaderCanvas) {
+      this.deviceReaderCanvas = document.createElement("canvas");
+      this.deviceReaderCanvas.width = this.deviceReaderCanvas.height = 240;
+    }
+    var context = this.deviceReaderCanvas.getContext("2d", {willReadFrequently: true});
+    context.imageSmoothingEnabled = false;
+    var side = Math.min(this.screen.width, this.screen.height);
+    context.drawImage(this.screen, 0, 0, side, side, 0, 0, 240, 240);
     var image = context.getImageData(0, 0, 240, 240);
     var found = scope.jsQR(image.data, image.width, image.height);
     return found && found.data ? found.data : null;

@@ -93,15 +93,19 @@ async function boot(width, height) {
   const qrShim = await (await fetch("browser_qr.py")).text();
   pyodide.FS.writeFile("/wallet/browser_qr.py", qrShim);
 
+  const hdResponse = await fetch("browser_hd.py");
+  if (!hdResponse.ok) throw new Error(`Could not load display renderer: ${hdResponse.status}`);
+  pyodide.FS.writeFile("/wallet/browser_hd.py", await hdResponse.text());
+
   post("status", { stage: "starting", message: "starting wallet…" });
 
   // Frames come back through this callback rather than being polled.
-  pyodide.globals.set("js_frame_sink", (bytes) => {
+  pyodide.globals.set("js_frame_sink", (bytes, frameWidth = width, frameHeight = height) => {
     // Pyodide may hand this over as a proxy or already as a typed array.
     const raw = bytes && typeof bytes.toJs === "function" ? bytes.toJs() : bytes;
     const copy = new Uint8Array(raw);
     if (bytes && typeof bytes.destroy === "function") bytes.destroy();
-    self.postMessage({ type: "frame", frame: copy }, [copy.buffer]);
+    self.postMessage({ type: "frame", frame: copy, width: frameWidth, height: frameHeight }, [copy.buffer]);
   });
 
   // Dropped here rather than on the page so the messages are not even built
@@ -396,7 +400,7 @@ def _traced_show(self, image, x_start=0, y_start=0):
     return _orig_show(self, image, x_start, y_start)
 browser_display.BrowserDisplay.show_image = _traced_show
 
-browser_display.install(js_frame_sink, ${width}, ${height})
+browser_display.install(js_frame_sink, ${width}, ${height}, hd_scale=8)
 
 from seedsigner.gui.renderer import Renderer
 from seedsigner.hardware.buttons import HardwareButtons, HardwareButtonsConstants

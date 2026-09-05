@@ -213,7 +213,7 @@ def altered(page):
     server = serve(root, harness.PORT + 1)
     try:
         open_panel(page, f"http://127.0.0.1:{harness.PORT + 1}"
-                         f"/wallet.html?debug=1&firmware={firmware}")
+                         f"/wallet.html?debug=1&firmware={firmware}&lang=en")
         state, computed = verdict(page)
         check("an altered zip is reported as altered", state == "differs", state)
         check("and the panel says so in words",

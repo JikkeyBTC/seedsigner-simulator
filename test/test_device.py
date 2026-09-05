@@ -23,7 +23,7 @@ phone's width draws keys about 23 pixels across, which is not a thumb target.
 The page offers a mode where the device takes the whole viewport, fitted to its
 height as well as its width, so that turning the phone sideways is what makes
 the keys big. This checks both halves of that, in both orientations, and that
-the wallet's own 320x240 screen keeps its shape throughout, since the tests
+the wallet's own 240x240 screen keeps its shape throughout, since the tests
 that compare it are comparing pixels.
 """
 
@@ -95,6 +95,53 @@ def main() -> int:
               f"warning ends at {int(warn['y'] + warn['height'])}, "
               f"device starts at {int(device['y'])}")
 
+        # Firmware pixel dimensions must not change the physical cover. A
+        # renderer switching to 4:3 used to widen the case and move the controls.
+        proportions = page.evaluate("""() => {
+          const node = document.createElement('div');
+          document.body.appendChild(node);
+          const shapes = [240, 320].map(width => {
+            const device = SeedSignerDevice.render(node, {
+              screenWidth: width, screenHeight: 240, card: false,
+              interactive: false
+            });
+            const r = device.screenRect;
+            return [device.width / device.height, r.x / device.width,
+                    r.y / device.height, r.width / device.width,
+                    r.height / device.height];
+          });
+          node.remove();
+          return shapes;
+        }""")
+        check("firmware resolution cannot stretch the physical cover",
+              max(abs(a - b) for a, b in zip(*proportions)) < 0.0001,
+              str(proportions))
+
+        def check_screen_registration(label):
+            canvas = page.locator("#screen").bounding_box()
+            opening = page.locator("#device .ssd-screen-window").bounding_box()
+            delta = max(abs(canvas[k] - opening[k]) for k in ("x", "y", "width", "height"))
+            check(f"{label}: display stays inside the cover opening",
+                  delta < 0.75, f"largest edge offset {delta:.3f}px")
+
+        page.evaluate("window.__mountedScreen = document.getElementById('screen')")
+        screen_sizes = []
+        for width in (320, 375, 768, 1440):
+            page.set_viewport_size({"width": width, "height": 1000})
+            check_screen_registration(f"{width}px viewport")
+            screen_sizes.append(page.locator("#screen").bounding_box()["width"])
+            check(f"{width}px viewport: no horizontal overflow",
+                  page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"))
+        check("the screen grows with the responsive cover",
+              all(a < b for a, b in zip(screen_sizes, screen_sizes[1:])),
+              str([round(v) for v in screen_sizes]))
+        check("resizing preserves the native canvas and its mounted instance",
+              page.evaluate("""() => {
+                const canvas = document.getElementById('screen');
+                return canvas === window.__mountedScreen && canvas.width === 240 && canvas.height === 240;
+              }"""))
+        page.set_viewport_size(PHONE)
+
         # --- the screen is not a button --------------------------------------
         page.evaluate(PROBE)
         slot = "#probe .ssd-screen-slot"
@@ -162,6 +209,13 @@ def main() -> int:
         page.wait_for_timeout(200)
         check("two fingers landing together are one press",
               presses(page) == [5], str(presses(page)))
+
+        page.evaluate("() => { window.__presses.length = 0; }")
+        for name in ("up", "down", "left", "right", "select", "key1", "key2", "key3"):
+            x, y = centre(page, f"#probe [data-ssd-control={name}]")
+            page.touchscreen.tap(x, y)
+        check("the joystick and all three tabs keep their original input channels",
+              presses(page) == list(range(1, 9)), str(presses(page)))
         page.evaluate("() => document.getElementById('probe').remove()")
 
         # --- the shell filling the screen -------------------------------------
@@ -169,9 +223,8 @@ def main() -> int:
             box = page.locator("#device [data-ssd-control=select]").bounding_box()
             return min(box["width"], box["height"])
 
-        # Long side over short side, so this says the same thing whichever way
-        # up the shell is: 320x240 is 4:3 laid across a phone as well as along
-        # it, and anything that stretched it would not be.
+        # The physical window and the native JikKey renderer are square in
+        # either orientation.
         def screen_shape():
             box = page.locator("#device .ssd-screen-slot").bounding_box()
             return (max(box["width"], box["height"])
@@ -185,18 +238,20 @@ def main() -> int:
         page.locator("#fullscreen").click()
         page.wait_for_timeout(400)
         device = page.locator("#device").bounding_box()
-        # Laid across the phone, so what it fills upright is the height.
-        check("it lays the device along the phone's long side",
-              device["height"] >= PHONE["height"] * 0.9
-              and device["width"] <= PHONE["width"] + 1,
+        check("it fits the cover along the phone's long side",
+              device["height"] <= PHONE["height"] + 1
+              and device["width"] <= PHONE["width"] + 1
+              and (device["height"] >= PHONE["height"] - 2
+                   or device["width"] >= PHONE["width"] - 2),
               f"{int(device['width'])}x{int(device['height'])} in "
               f"{PHONE['width']}x{PHONE['height']}")
         # 44 pixels is the smallest target every accessibility guideline agrees
         # a finger can be asked to hit.
         check("which is what makes the keys thumb sized", key_size() >= 44,
               f"{key_size():.0f}px, was {in_page:.0f}px in the page")
-        check("the wallet's screen keeps its 4:3 shape, unstretched",
-              abs(screen_shape() - 4 / 3) < 0.02, f"{screen_shape():.3f}")
+        check("the wallet's screen stays square and unstretched",
+              abs(screen_shape() - 1) < 0.02, f"{screen_shape():.3f}")
+        check_screen_registration("portrait fullscreen")
         page.screenshot(path=harness.artifact("device-360-fullscreen.png"))
 
         page.set_viewport_size(PHONE_SIDEWAYS)
@@ -216,8 +271,9 @@ def main() -> int:
               f"{PHONE_SIDEWAYS['width']}x{PHONE_SIDEWAYS['height']}")
         check("and the keys are the same thumb sized keys", key_size() >= 44,
               f"{key_size():.0f}px")
-        check("and the screen is still 4:3", abs(screen_shape() - 4 / 3) < 0.02,
+        check("and the screen is still square", abs(screen_shape() - 1) < 0.02,
               f"{screen_shape():.3f}")
+        check_screen_registration("landscape fullscreen")
         page.screenshot(path=harness.artifact("device-sideways-fullscreen.png"))
 
         page.keyboard.press("Escape")

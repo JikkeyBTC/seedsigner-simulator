@@ -9,7 +9,7 @@ tests against it, and stops the server whether they passed or not.
 
 Prerequisites, and nothing else:
   - Python 3.9+
-  - pip install playwright && playwright install chromium
+  - pip install playwright Pillow && playwright install chromium
   - build/fetch-assets.sh and build/build-wallet-zip.sh able to run once, which
     needs network access. Their outputs are not committed: the Pyodide runtime is
     26MB of someone else's release, and wallet.zip is built from a pinned
@@ -20,12 +20,13 @@ seconds, so a broken checkout says so before anything spends two minutes booting
 CPython in WebAssembly.
 """
 
-import filecmp
 import os
 import socket
 import subprocess
 import sys
 import time
+
+from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -45,12 +46,16 @@ PY = sys.executable
 SUITE = [
     ("leak_scan", ["leak_scan.py"], False),
     ("cards", ["test_cards.py"], False),
+    ("hd", ["test_hd.py"], False),
     ("brand", ["test_brand.py"], True),
     ("server", ["test_server.py"], True),
     ("tray_layout", ["test_tray_layout.py"], True),
     ("device", ["test_device.py"], True),
     ("doom_layout", ["test_doom_layout.py"], True),
     ("display", ["test_display.py"], True),
+    ("web_i18n", ["test_web_i18n.py"], True),
+    ("firmware_locale", ["test_firmware_locale.py"], True),
+    ("hd_qr", ["test_hd_qr.py"], True),
     ("firmware", ["test_firmware.py"], True),
     ("build_info", ["test_build_info.py"], True),
     ("settings", ["test_settings.py"], True),
@@ -146,8 +151,8 @@ def start_server():
 # runs end on the same rendered fingerprint. Comparing the images turns a claim
 # somebody had to check by eye into something CI can fail on.
 #
-# What is compared is the device's own canvas -- the 320x240 SeedSigner's
-# renderer drew, read back out of it by the scan tests -- and not the page
+# What is compared is the device's own 1920x1920 display output from its native
+# 240x240 layout, read back by the scan tests -- and not the page
 # screenshots sitting next to it in the same directory. A screenshot of the page
 # also holds the title, the amber warning box, the tray labels and the hint line,
 # every one of them drawn with the fonts the machine happens to have and not one
@@ -174,6 +179,13 @@ SAME_SEED_SCREENS = ("scan-screen-qr.png", "scan-screen-qr-compact.png",
                      "scan-screen-native-compact.png")
 
 
+def same_pixels(first, second):
+    # PNG metadata/compression may differ between Chromium releases. The
+    # decoded dimensions and every RGBA pixel still have to match exactly.
+    with Image.open(first) as left, Image.open(second) as right:
+        return left.size == right.size and left.convert("RGBA").tobytes() == right.convert("RGBA").tobytes()
+
+
 def same_seed(firmware="smartcard") -> int:
     label = "same_seed" if firmware == "smartcard" else f"{firmware}_same_seed"
     print(f"\n=== {label} " + "=" * (63 - len(label)), flush=True)
@@ -187,7 +199,7 @@ def same_seed(firmware="smartcard") -> int:
         print(f"  FAIL no captured screen from {missing}")
         return 1
     for other in paths[1:]:
-        if not filecmp.cmp(paths[0], other, shallow=False):
+        if not same_pixels(paths[0], other):
             print(f"  FAIL {os.path.basename(other)} is a different screen from "
                   f"{os.path.basename(paths[0])}; the scan-proof-*.png "
                   "screenshots beside them show what each run was displaying")
@@ -200,7 +212,7 @@ def same_seed(firmware="smartcard") -> int:
     #
     # That anchor is BASELINE, and moving the comparison to the canvas does not
     # weaken it: the baseline is the same capture of the same screen, taken from
-    # a run whose decoded seed was checked, and it is 320x240 of the wallet's own
+    # a run whose decoded seed was checked, and it is 1920x1920 of the wallet's own
     # output with nothing of the host in it. It is a picture rather than a digest
     # so that the anchor can be audited by opening it: it is SeedFinalizeScreen
     # reading "fingerprint b2269592", which is the BIP39 test vector "army van
@@ -209,7 +221,7 @@ def same_seed(firmware="smartcard") -> int:
     if not os.path.exists(BASELINE):
         print(f"  FAIL no baseline at {BASELINE}")
         return 1
-    if not filecmp.cmp(paths[0], BASELINE, shallow=False):
+    if not same_pixels(paths[0], BASELINE):
         print("  FAIL the decoded seed does not match the known-good baseline "
               f"({os.path.basename(BASELINE)}); the wallet decoded or derived "
               "something other than the test vector")

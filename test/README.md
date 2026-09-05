@@ -16,7 +16,7 @@ with `?debug=1`, which is why every URL the tests build carries it.
 
 Prerequisites:
 
-    pip install playwright==1.47.0
+    pip install playwright==1.47.0 Pillow==10.2.0
     playwright install chromium
 
 Then, from a fresh clone:

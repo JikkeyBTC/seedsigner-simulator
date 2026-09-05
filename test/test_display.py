@@ -1,4 +1,4 @@
-"""Both firmware variants boot with the native square JikKey display."""
+"""Both firmwares retain a 240px layout with an eightfold display backing."""
 
 import os
 import sys
@@ -19,10 +19,14 @@ def main() -> int:
             page.goto(harness.wallet_url(firmware=firmware))
             log.wait(r"display\(\) enter: MainMenuScreen", 240,
                      f"{firmware} firmware to boot")
+            page.wait_for_function("document.querySelector('#screen').width === 1920", timeout=60000)
             dimensions = page.locator("#screen").evaluate(
                 "canvas => [canvas.width, canvas.height]")
-            check(f"{firmware} boots its 240 by 240 renderer",
-                  dimensions == [240, 240], str(dimensions))
+            check(f"{firmware} emits a 1920 by 1920 frame",
+                  dimensions == [1920, 1920], str(dimensions))
+            check(f"{firmware} keeps native 240 by 240 layout coordinates",
+                  page.locator('#screen').evaluate(
+                      "c => [Number(c.dataset.logicalWidth), Number(c.dataset.logicalHeight)]") == [240, 240])
             check(f"{firmware} reports a square slot",
                   abs(page.locator("#device .ssd-screen-slot").evaluate(
                       "node => node.getBoundingClientRect().width / node.getBoundingClientRect().height") - 1) < 0.02)

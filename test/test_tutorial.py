@@ -269,7 +269,7 @@ def next_instruction(page, after, timeout=180):
 def boot(context, log_lines, query="tutorial=1&debug=1"):
     page = context.new_page()
     log = Log(page)
-    page.goto(f"{ORIGIN}/wallet.html?{query}")
+    page.goto(f"{ORIGIN}/wallet.html?{query}&lang=en")
     log.wait(r"display\(\) enter: MainMenuScreen", 300, "the wallet to boot")
     log_lines.append(log)
     return page, log
@@ -543,7 +543,7 @@ def main() -> int:
         # wallet=1, or this waits on DOOM: the page boots into the game and
         # fetches the wallet only on the unlock. What is being asked here is
         # whether the wallet page offers a tutorial, not what boots first.
-        bare.goto(f"{ORIGIN}/wallet.html?wallet=1")
+        bare.goto(f"{ORIGIN}/wallet.html?wallet=1&lang=en")
         bare.wait_for_timeout(2500)
         check("the page at rest says nothing about a tutorial",
               bare.locator("#start-tutorial").count() == 0
@@ -552,7 +552,7 @@ def main() -> int:
 
         resting = context.new_page()
         resting.set_viewport_size({"width": 360, "height": 780})
-        resting.goto(f"{ORIGIN}/wallet.html?tutorial=offer")
+        resting.goto(f"{ORIGIN}/wallet.html?tutorial=offer&lang=en")
         resting.wait_for_timeout(2500)
         check("asked for it, the page offers the tutorial and nothing else",
               resting.locator("#start-tutorial").count() == 1
@@ -566,7 +566,7 @@ def main() -> int:
         # Asking for it, so this still proves the firmware gate rather than
         # passing because nothing offers a tutorial on a bare URL any more.
         stock = context.new_page()
-        stock.goto(f"{ORIGIN}/wallet.html?firmware=stock&tutorial=offer")
+        stock.goto(f"{ORIGIN}/wallet.html?firmware=stock&tutorial=offer&lang=en")
         stock.wait_for_timeout(2500)
         check("stock is not offered a tutorial about cards it does not have",
               stock.locator("#start-tutorial").count() == 0)

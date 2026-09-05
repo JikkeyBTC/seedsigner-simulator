@@ -44,6 +44,10 @@ const SHELL = [
   "./wallet-coordinator.js",
   "./wallet-track.js",
   "./seedsigner-device.js",
+  "./jikkey-i18n.js",
+  "./jikkey-theme.css",
+  "./jikkey-suede.svg",
+  "./jikkey-logo.png",
   // The boot itself, and the placeholder that stands in for DOOM. Both are
   // small and both are on every load. What is deliberately not here is DOOM:
   // doom.js, doom.wasm and the WAD are about ten megabytes gzipped, and
@@ -70,6 +74,7 @@ const SHELL = [
   "./browser_camera.py",
   "./browser_qr.py",
   "./browser_display.py",
+  "./browser_hd.py",
   "./manifest.json",
   "./jikkey-logo.svg",
 ];
