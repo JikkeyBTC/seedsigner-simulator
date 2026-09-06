@@ -1,12 +1,12 @@
 # Self-hosting
 
 Everything here is static files. There is no backend, no database and nothing
-running at request time, but there are two headers, and without them the page
-loads and then does nothing.
+running at request time. The browser requires cross-origin isolation; either
+the server or the included service worker must supply the two headers below.
 
 ## The one thing that breaks every first attempt
 
-The page **must** be served with both of these:
+The page **must** receive both of these:
 
 ```http
 Cross-Origin-Opener-Policy: same-origin
@@ -21,19 +21,38 @@ worker is blocked inside SeedSigner's main loop and can never answer a
 [ARCHITECTURE.md](ARCHITECTURE.md#the-constraint-everything-follows-from)).
 No shared memory, no wallet.
 
-`wallet.html` checks for this before it starts the worker and puts a message on the
-page rather than failing silently. If you see
+`wallet-isolation.js` checks this before allocating shared memory. On a secure
+static host without these headers it installs `sw.js`, waits for activation and
+reloads the page. The service worker adds the headers to same-origin responses,
+including cached responses. Failed setup shows a message and stops retrying
+after two reloads. Serving the headers directly avoids this initial reload.
 
-> this page needs cross-origin isolation, which the server is not sending
+**The simulator needs a secure context.** That means `https://`, or
+`http://localhost` / `http://127.0.0.1`. Plain HTTP on a LAN address cannot provide
+the shared memory, service worker or camera access needed by the simulator.
+Use the public HTTPS URL from a phone.
 
-it is the headers, always. `python3 -m http.server` does not send them, which is
-why this repository ships its own server.
+## GitHub Pages
 
-The second rule is smaller but just as confusing when you hit it: **the camera
-needs a secure context.** That means `https://`, or `http://localhost` /
-`http://127.0.0.1`. On a plain `http://` LAN address there is no
-`navigator.mediaDevices` to ask, so scanning fails with "no camera API here; needs
-https or localhost". Everything else still works.
+The public site is <https://jikkeybtc.github.io/seedsigner-simulator/>.
+The repository's Pages publishing source is **GitHub Actions**. Pushes to
+`sandbox/0906_work` or `main` run `.github/workflows/pages.yml`; a manual workflow
+dispatch is also supported. The workflow fetches the pinned Pyodide runtime,
+builds both firmware zips and runs:
+
+```sh
+python3 build/package-pages.py
+```
+
+The resulting `build/pages/` contains the page, runtime, shims, firmware and a
+root redirect to the smartcard simulator. The output directory must be new or
+empty; `--output DIR` selects another directory. GitHub Actions uploads this
+directory as the Pages artifact and publishes it over HTTPS. Visitors need no
+GitHub account, and the simulator runs inside each visitor's browser.
+
+Keep the site files together under one path so `sw.js` controls `wallet.html`.
+The first visit automatically reloads after preparing isolation. This allows
+GitHub Pages hosting without custom server headers or a separate backend.
 
 ## Getting the pieces
 

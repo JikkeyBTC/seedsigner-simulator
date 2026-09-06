@@ -3,12 +3,12 @@
   "short_name": "JikKey",
   "description": "SeedSigner and ShieldSigner firmware running in a JikKey browser simulator.",
   "id": "./",
-  "start_url": "./index.html",
+  "start_url": "./wallet.html?firmware=smartcard&wallet=1",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0b0c0e",
-  "theme_color": "#0076ff",
+  "background_color": "#ff8508",
+  "theme_color": "#ff8508",
   "icons": [
     { "src": "jikkey-logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]

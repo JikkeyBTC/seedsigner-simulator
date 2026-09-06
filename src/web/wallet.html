@@ -637,12 +637,12 @@
      that is start()'s job, and it only happens on a page that boots the game. -->
 <script src="doom-run.js"></script>
 <script src="doom-boot.js"></script>
+<script src="wallet-isolation.js"></script>
 <script>
-// Offline cache. Registered late and failure-tolerant: the simulator must work
-// exactly the same if this is unavailable or blocked.
-if ("serviceWorker" in navigator) {
-  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-}
+(async function startSimulatorPage() {
+// On static hosting the first visit installs isolation, then reloads. Do not
+// allocate shared memory or start a worker until that document is ready.
+if (!await SimulatorIsolation.ready()) return;
 
 // The one name the page below uses to count anything, and a set of no-ops when
 // wallet-track.js is not there -- a clone that did not copy it, a blocker that
@@ -1399,6 +1399,7 @@ if (!window.crossOriginIsolated) {
     });
   }
 }
+})();
 </script>
 </body>
 </html>

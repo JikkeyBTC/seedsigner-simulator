@@ -1,6 +1,6 @@
 # SeedSigner simulator
 
-[![try it live](https://img.shields.io/badge/try%20it-live-f7931a?style=flat-square)](https://bitsaga.be/seedsigner-simulator/)
+[![try it live](https://img.shields.io/badge/try%20it-live-f7931a?style=flat-square)](https://jikkeybtc.github.io/seedsigner-simulator/)
 [![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B11-blue?style=flat-square)](UPSTREAM)
 [![stock](https://img.shields.io/badge/stock-0.8.7-blue?style=flat-square)](UPSTREAM)
 [![reproducible-build](https://img.shields.io/github/actions/workflow/status/bitsagarob/seedsigner-simulator/reproducible-build.yml?branch=main&label=reproducible%20build&style=flat-square)](https://github.com/bitsagarob/seedsigner-simulator/actions/workflows/reproducible-build.yml)
@@ -47,8 +47,21 @@ only by tests we wrote ourselves about somebody else's code.
 
 ## Try it
 
+Open the [JikKey simulator](https://jikkeybtc.github.io/seedsigner-simulator/)
+on a desktop or phone. No account or installation is required. The first visit
+may refresh once to prepare the browser runtime. The surrounding page defaults
+to Korean; the device display follows only the firmware's own language setting.
+
+Pushes to `sandbox/0906_work` or `main` publish through the
+[GitHub Pages workflow](.github/workflows/pages.yml). It builds both pinned
+firmwares and the runtime, then uploads the static site; no Vercel service or
+local computer is required. See [self-hosting](docs/SELF-HOSTING.md#github-pages)
+for the packaging command and hosting requirements.
+
+To run locally:
+
 ```sh
-git clone https://github.com/bitsagarob/seedsigner-simulator.git
+git clone https://github.com/JikkeyBTC/seedsigner-simulator.git
 cd seedsigner-simulator
 ./build/fetch-assets.sh              # Pyodide, pinned and hash-checked (~26 MB, once)
 ./build/build-wallet-zip.sh smartcard   # wallet-smartcard.zip, from the pinned commit
@@ -63,8 +76,9 @@ and the wallet zips are built rather than shipped so that what you run is provab
 the pinned commit and not something a maintainer pasted in. Both steps verify what
 they download before using it.
 
-The two headers that server sends are not optional: without cross-origin isolation
-the page cannot use `SharedArrayBuffer` and the wallet never starts.
+The wallet needs cross-origin isolation to use `SharedArrayBuffer`. The local
+server supplies the required headers directly; the service worker supplies them
+on HTTPS static hosts such as GitHub Pages before the wallet starts.
 [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md) is the short version. After the first
 load the page runs offline.
 

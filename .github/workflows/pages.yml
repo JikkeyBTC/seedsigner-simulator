@@ -1,0 +1,54 @@
+name: Deploy simulator to GitHub Pages
+
+on:
+  push:
+    branches: [main, sandbox/0906_work]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/configure-pages@v5
+      - uses: actions/cache@v4
+        with:
+          path: |
+            src/web/pyodide
+            ~/.cache/seedsigner-sim-build
+          key: pages-runtime-${{ hashFiles('build/fetch-assets.sh', 'build/build-wallet-zip.sh', 'UPSTREAM') }}
+      - name: Build pinned runtime and firmware
+        run: |
+          bash build/fetch-assets.sh
+          bash build/build-wallet-zip.sh smartcard
+          bash build/build-wallet-zip.sh stock
+      - name: Assemble public site
+        run: python build/package-pages.py
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

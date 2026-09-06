@@ -20,6 +20,7 @@ __pycache__/
 # Normal runs use mktemp outside the repository and clean up after themselves.
 /build/tmp/
 /build/staging/
+/build/pages/
 *.tmp
 
 # Editor and OS droppings

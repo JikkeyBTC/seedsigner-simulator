@@ -1,0 +1,47 @@
+"""Assemble a self-contained GitHub Pages artifact from the pinned build."""
+
+import argparse
+from pathlib import Path
+import shutil
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "build/pages")
+    args = parser.parse_args()
+    output = args.output.resolve()
+    if output.exists() and (not output.is_dir() or any(output.iterdir())):
+        parser.error("output must be a new or empty directory")
+    required = [ROOT / "src/web/pyodide/pyodide.js", ROOT / "src/web/pyodide/pyodide.asm.wasm"]
+    for firmware in ("smartcard", "stock"):
+        required += [ROOT / "build/out" / f"wallet-{firmware}{suffix}"
+                     for suffix in (".zip", ".zip.manifest", ".build-info.json")]
+    for source in required:
+        if not source.is_file():
+            parser.error(f"missing build input: {source.relative_to(ROOT)}")
+    shutil.copytree(ROOT / "src/web", output, dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    for source in (ROOT / "src/shims").glob("browser_*.py"):
+        shutil.copy2(source, output / source.name)
+    for source in required[2:]:
+        shutil.copy2(source, output / source.name)
+    # DOOM is optional. A fresh wallet-only build needs the same lightweight
+    # placeholder as a local checkout without the separately built engine.
+    if not (output / "doom-run.js").exists():
+        (output / "doom-run.js").write_text("// DOOM is not included in this wallet-only build.\n", encoding="utf-8")
+    (output / ".nojekyll").touch()
+    (output / "index.html").write_text('''<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="0;url=wallet.html?firmware=smartcard&amp;wallet=1">
+<title>직키 시뮬레이터</title></head>
+<body><a href="wallet.html?firmware=smartcard&amp;wallet=1">시뮬레이터 열기</a></body></html>
+''', encoding="utf-8")
+    print(f"GitHub Pages artifact: {output}")
+
+
+if __name__ == "__main__":
+    main()

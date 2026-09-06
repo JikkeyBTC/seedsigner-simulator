@@ -39,6 +39,7 @@ const SHELL = [
   "./index.html",
   "./wallet.html",
   "./wallet-worker.js",
+  "./wallet-isolation.js",
   "./wallet-camera.js",
   "./wallet-cards.js",
   "./wallet-touch.js",
@@ -95,6 +96,19 @@ const SHELL = [
 // glue in doom.js does not: it is built here and moves when the build does.
 const IMMUTABLE = /\/(pyodide\/|fonts\/|icon-|apple-touch-icon|doom\.wasm|freedoom\d*\.wad)/;
 
+// GitHub Pages serves HTTPS but does not expose custom response headers.
+// Apply the same isolation policy to network and offline responses alike.
+function isolated(response) {
+  if (response.status === 0) return response;
+  const headers = new Headers(response.headers);
+  headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  return new Response([204, 205, 304].includes(response.status) ? null : response.body, {
+    status: response.status, statusText: response.statusText, headers,
+  });
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
@@ -119,16 +133,17 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
+  if (req.cache === "only-if-cached" && req.mode !== "same-origin") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
   if (IMMUTABLE.test(url.pathname)) {
     event.respondWith((async () => {
       const hit = await caches.match(req);
-      if (hit) return hit;
+      if (hit) return isolated(hit);
       const res = await fetch(req);
       if (res.ok) (await caches.open(CACHE)).put(req, res.clone());
-      return res;
+      return isolated(res);
     })());
     return;
   }
@@ -137,10 +152,10 @@ self.addEventListener("fetch", (event) => {
     try {
       const res = await fetch(req);
       if (res.ok) (await caches.open(CACHE)).put(req, res.clone());
-      return res;
+      return isolated(res);
     } catch (err) {
       const hit = await caches.match(req);
-      if (hit) return hit;
+      if (hit) return isolated(hit);
       throw err;
     }
   })());
