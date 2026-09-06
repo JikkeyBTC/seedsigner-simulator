@@ -1,7 +1,7 @@
 # SeedSigner simulator
 
 [![try it live](https://img.shields.io/badge/try%20it-live-f7931a?style=flat-square)](https://jikkeybtc.github.io/seedsigner-simulator/)
-[![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B11-blue?style=flat-square)](UPSTREAM)
+[![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B12-blue?style=flat-square)](UPSTREAM)
 [![stock](https://img.shields.io/badge/stock-0.8.7-blue?style=flat-square)](UPSTREAM)
 [![reproducible-build](https://img.shields.io/github/actions/workflow/status/bitsagarob/seedsigner-simulator/reproducible-build.yml?branch=main&label=reproducible%20build&style=flat-square)](https://github.com/bitsagarob/seedsigner-simulator/actions/workflows/reproducible-build.yml)
 [![tests](https://img.shields.io/github/actions/workflow/status/bitsagarob/seedsigner-simulator/test.yml?branch=main&label=tests&style=flat-square)](https://github.com/bitsagarob/seedsigner-simulator/actions/workflows/test.yml)
@@ -97,6 +97,25 @@ is locked. The same control, or Escape, comes back out.
 The page opens on the smartcard fork. The **Firmware** control under the device
 switches to stock and back, and `?firmware=stock` is a link straight to it.
 
+### ShieldSigner and DIY applets
+
+The smartcard build uses the official `SeSi-0.8.7+ShSi-B12` Python source at
+[`6faaffcb`](https://github.com/3rdIteration/seedsigner/releases/tag/SeSi-0.8.7%2BShSi-B12).
+It runs in Pyodide with simulated display, input and smartcard interfaces; it
+does not boot the release's Linux disk image or its separate DIY filesystem.
+
+**Smartcard Tools → DIY Tools → Build Applets is not supported in this browser
+runtime.** Upstream first checks for Apache Ant, then runs it as a native process
+with a Java JDK, JavaCard SDK and applet sources. The browser has no native
+subprocess support, so copying the missing directory alone cannot enable builds.
+Build applets on a device or computer with the official DIY toolchain instead.
+The simulator keeps the firmware's own warning and shows an explanation outside
+the device when that warning appears. The web language switch only translates
+that surrounding explanation.
+
+The virtual cards emulate the SeedKeeper/Satochip command protocols. They do not
+run a JavaCard VM or install arbitrary CAP applets.
+
 Running your own SeedSigner fork in it takes no edit to `UPSTREAM`: `SS_REPO` and
 `SS_COMMIT` override the pin for one build, and
 [CONTRIBUTING.md](CONTRIBUTING.md#running-your-own-fork-of-seedsigner-in-it) has
@@ -125,7 +144,7 @@ the worked example and what the resulting hashes mean.
   and should be treated as public from the moment it appears there.
 - **Pinned to a release, not a branch tip.** [`UPSTREAM`](UPSTREAM) has a section
   per firmware. Stock is SeedSigner's own tag `0.8.7` (`e0a80d4b…`). The fork is
-  3rdIteration's `SeSi-0.8.7+ShSi-B11` (`662d9dba…`), which is also the tag the
+  3rdIteration's `SeSi-0.8.7+ShSi-B12` (`6faaffcb…`), which is also the tag the
   official pi0-smartcard device image is built from, so the fork here and that
   physical device run the same code; stock makes no such claim, because there is
   no such image. A branch tip can be rebased out from under a pin; a tag cannot.

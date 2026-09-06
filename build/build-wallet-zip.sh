@@ -220,7 +220,7 @@ smartcard)
 # asks PyPI for pysatochip==0.17.0; the SeedSigner OS image builds
 # 3rdIteration/pysatochip from GitHub at the tag 0.6a through buildroot, and
 # then deletes requirements.txt from the rootfs. Both are in seedsigner-os at
-# the tag whose name matches this firmware's, SeSi-0.8.7+ShSi-B11:
+# the tag whose name matches this firmware's, SeSi-0.8.7+ShSi-B12:
 #
 #   opt/external-packages/python-pysatochip/python-pysatochip.mk
 #       PYTHON_PYSATOCHIP_VERSION = 0.6a

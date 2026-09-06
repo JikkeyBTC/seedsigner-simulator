@@ -31,6 +31,7 @@ header { width: min(68rem, 100%); position: relative; min-height: 2.8rem; paddin
 .hint, #getone p { color: #382719; }
 .warn { color: #f7dcd0; background: #302019; border-color: #59382a; font-size: .84rem; padding: .6rem 1rem; }
 .warn strong { color: #ffe9df; }
+#capability-note { margin: 0; text-align: center; }
 #firmware-switch, #fullscreen { background: #241c18; border-color: #543a2b; color: #e2d0c2; }
 #firmware-switch { border: 1px solid #543a2b; padding: .35rem .55rem; border-radius: 9px; }
 #firmware-switch .label { color: #e2d0c2; }

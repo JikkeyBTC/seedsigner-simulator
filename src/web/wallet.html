@@ -563,6 +563,7 @@
            why the wallet is not up. Filled in by the boot below and emptied
            again the moment the wallet has the device. -->
       <p class="hint" id="doom-hint"></p>
+      <p class="warn" id="capability-note" role="status" hidden>Applet building is unavailable in this browser. It requires Java, Apache Ant and the DIY tools on a device or computer.</p>
       <p class="hint touch-hint">Tap a menu to open it. Swipe up or down to move through the list.</p>
       <!-- Why the device has stopped answering, when the reason is that its
            camera has gone quiet. Filled in by the camera channel and emptied
@@ -724,7 +725,7 @@ const FIRMWARE_INFO = {
   smartcard: {
     button: "ShieldSigner",
     says: "Running the 3rdIteration smartcard fork of SeedSigner, tag " +
-          "SeSi-0.8.7+ShSi-B11, which adds SeedKeeper and Satochip cards.",
+          "SeSi-0.8.7+ShSi-B12, which adds SeedKeeper and Satochip cards.",
     panel: "the 3rdIteration fork of SeedSigner, a third party fork that adds " +
            "SeedKeeper and Satochip cards",
   },
@@ -1220,6 +1221,9 @@ function startWallet() {
       if (wallet) wallet.log(event.data.message);
       if (DEBUG) console.log("[py] " + event.data.message);
       narrate(event.data.message);
+    } else if (type === "capability") {
+      // Browser support guidance stays outside the firmware display.
+      document.getElementById("capability-note").hidden = event.data.code !== "applet-build";
     } else if (type === "status") {
       statusEl.textContent = event.data.message;
       // How far the boot got, and how long it had taken by then.

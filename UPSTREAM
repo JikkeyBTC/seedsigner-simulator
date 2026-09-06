@@ -45,11 +45,11 @@ wallet_zip_contents_sha256 = dbea45131cc89e391b8ced909975b7d0030771d1d284142dd82
 # code.
 [smartcard]
 repo   = https://github.com/3rdIteration/seedsigner.git
-commit = 662d9dba2327eb77d6924ae9bd62d4902bf24634
-tag    = SeSi-0.8.7+ShSi-B11
+commit = 6faaffcb06a2ba578a96fdef689d97e21793ec23
+tag    = SeSi-0.8.7+ShSi-B12
 
-wallet_zip_sha256          = 22e6034509b547242db58ea7303d3f605007c60e637444b173e505eabbb834ca
-wallet_zip_contents_sha256 = d2527f58d122a7155343b215b596dc94991dad5e893b9f5ec30da6ffe1463684
+wallet_zip_sha256          = 99f38dddf65717d6656205fc747eb553f3b1af48a6d57a32cfee78e96b1a061c
+wallet_zip_contents_sha256 = da346e8a7dce5b2e82bd45ac011af6b4fba75f42a5ed3765ebe96d746f4f580c
 
 # The two smartcard applets, pinned as a reference rather than as an input.
 #
