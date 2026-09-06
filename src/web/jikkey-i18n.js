@@ -16,7 +16,7 @@
     "Try a SeedSigner in your browser.": "브라우저에서 SeedSigner를 체험해 보세요.",
     "Its Python firmware runs locally with Pyodide. The simulator provides the display, buttons, camera and optional smartcards.": "Pyodide로 Python 펌웨어를 이 브라우저에서 실행해요. 화면, 버튼, 카메라와 스마트카드는 시뮬레이터가 연결해요.",
     "Choose your firmware below the device.": "기기 아래에서 펌웨어를 골라 보세요.",
-    "SeedSigner is the original release. ShieldSigner adds SeedKeeper and Satochip support. DoomSigner opens DOOM before the smartcard wallet.": "SeedSigner는 기본 펌웨어예요. ShieldSigner는 SeedKeeper와 Satochip을 지원해요. DoomSigner는 DOOM을 먼저 실행한 뒤 스마트카드 지갑을 열어요.",
+    "SeedSigner is the original release. ShieldSigner adds SeedKeeper and Satochip support.": "SeedSigner는 기본 펌웨어예요. ShieldSigner는 SeedKeeper와 Satochip을 지원해요.",
     "Display and buttons:": "화면과 버튼",
     "use the device buttons, or the arrow keys, Enter and side keys 1, 2, 3.": "기기의 버튼을 눌러 보세요. 키보드 방향키와 Enter, 측면 버튼에 해당하는 1·2·3 키도 쓸 수 있어요.",
     "Camera:": "카메라",

@@ -50,7 +50,7 @@ body.solo #fullscreen { right: 7rem; }
 #cardtray { width: min(52rem, 100%); }
 #cardtray .cardtray { gap: 1.15rem; font-family: inherit; }
 #cardtray .cardtray-reader { box-sizing: border-box; width: min(27rem, 100%); }
-#cardtray .cardtray-row { width: 100%; gap: 1.2rem; }
+#cardtray .cardtray-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: 1.2rem; }
 #cardtray .cardtray-cell { width: auto; flex: 1 1 0; gap: .65rem; }
 #cardtray .cardtray-card {
   position: relative; display: block; width: 100%; aspect-ratio: 694 / 457;
@@ -82,10 +82,22 @@ body.solo #fullscreen { right: 7rem; }
 #cardtray .cardtray-kind { min-height: 2.35rem; font-size: .82rem; border-radius: 7px; color: #eadcca; background: #28211b; border-color: #5c3f26; }
 #cardtray .cardtray-kind:disabled { opacity: .75; }
 @media (max-width: 40rem) {
-  #cardtray .cardtray-row { flex-direction: column; width: min(21rem, 100%); gap: 1.2rem; }
-  #cardtray .cardtray-cell { flex: none; width: 100%; }
-  #cardtray .cardtray-name { font-size: 1.55rem; }
-  #cardtray .cardtray-pill { font-size: .85rem; }
+  #cardtray .cardtray-row { gap: clamp(.5rem, 2vw, .85rem); }
+  #cardtray .cardtray-cell { gap: .5rem; }
+  /* Keep the photograph's proportions, with readable state below it. */
+  #cardtray .cardtray-card {
+    display: flex; flex-direction: column; align-items: center; flex: 1;
+    aspect-ratio: auto; padding: calc(65.85% + .45rem) .25rem .45rem;
+    border-radius: 7px; gap: .25rem; background: #211c17;
+  }
+  #cardtray .cardtray-card::before { bottom: auto; aspect-ratio: 694 / 457; border-radius: 7px; }
+  #cardtray .cardtray-top { top: .4rem; left: .4rem; }
+  #cardtray .cardtray-in { font-size: .55rem; letter-spacing: 0; }
+  #cardtray .cardtray-name { top: .4rem; right: .4rem; font-size: clamp(.75rem, 2.8vw, 1.1rem); }
+  #cardtray .cardtray-pill { position: static; align-self: center; max-width: 100%; box-sizing: border-box; padding: .1rem .3rem; font-size: .65rem; text-align: center; }
+  #cardtray .cardtray-tries { position: static; max-width: 100%; font-size: .6rem; text-align: center; }
+  #cardtray .cardtray-tries:empty { display: none; }
+  #cardtray .cardtray-kind { min-height: 2.75rem; font-size: .7rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   #cardtray .cardtray-card { transition: none; }

@@ -241,31 +241,26 @@
   /* The firmware control, in the card tray's idiom: a plain two-way switch and
      nothing shaped like a card or a slot, because this page says microSD is not
      emulated and a slot to push something into would promise otherwise. */
-  /* Wraps, because there are three of these now and a 360 pixel phone cannot
-     hold the label and all three on one line. Centred so a wrapped row does not
-     hang off to one side. */
+  /* Keep both firmware choices together at every viewport width. */
   #firmware-switch {
-    display: flex; flex-wrap: wrap; justify-content: center;
-    align-items: center; gap: .35rem;
+    display: grid; grid-template-columns: auto repeat(2, minmax(0, 1fr));
+    align-items: center; gap: .35rem; min-width: 0; box-sizing: border-box;
   }
   #firmware-switch .label { color: #7c848f; }
   #firmware-switch button {
     font: inherit; color: #8b939e; background: #1d2026; border: 1px solid #2a2e35;
-    border-radius: 5px; padding: .2rem .6rem; cursor: pointer;
+    border-radius: 5px; padding: .2rem .6rem; cursor: pointer; white-space: nowrap;
   }
   #firmware-switch button:hover { color: #d7dbe0; border-color: #3a3f47; }
   #firmware-switch button[aria-pressed=true] {
     color: #f7931a; border-color: #f7931a; background: #16181c; cursor: default;
   }
   #firmware-switch button:focus-visible { outline: 2px solid #f7931a; outline-offset: 2px; }
-  /* Stacked on a phone. Three names and a label do not fit one line at 360px,
-     so they wrapped: two buttons on one row and the third alone under them,
-     which reads as a group of two and an afterthought rather than as three
-     choices. A column is three choices. Sized to the widest of them so the
-     edges line up, rather than each button being as wide as its own word. */
+  /* Move only the label above the two equal-width buttons on a phone. */
   @media (max-width: 30rem) {
-    #firmware-switch { flex-direction: column; gap: .4rem; }
-    #firmware-switch button { width: 11rem; padding: .35rem .6rem; }
+    #firmware-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+    #firmware-switch .label { grid-column: 1 / -1; text-align: center; }
+    #firmware-switch button { min-height: 2.75rem; padding: .35rem .6rem; }
   }
   /* The build half of the panel: same voice and same column as the prose above
      it, set off only by its headings, because it is the end of one argument
@@ -465,7 +460,7 @@
       <summary aria-label="About this simulator" title="About this simulator">i</summary>
       <div>
         <p><strong>Try a SeedSigner in your browser.</strong> Its Python firmware runs locally with Pyodide. The simulator provides the display, buttons, camera and optional smartcards.</p>
-        <p><strong>Choose your firmware below the device.</strong> SeedSigner is the original release. ShieldSigner adds SeedKeeper and Satochip support. DoomSigner opens DOOM before the smartcard wallet.</p>
+        <p><strong>Choose your firmware below the device.</strong> SeedSigner is the original release. ShieldSigner adds SeedKeeper and Satochip support.</p>
         <ul>
           <li><strong>Display and buttons:</strong> use the device buttons, or the arrow keys, Enter and side keys 1, 2, 3.</li>
           <li><strong>Camera:</strong> scanning uses your webcam. In the wallet and walkthrough, QR codes pass between the on-page screens without a webcam.</li>
@@ -597,11 +592,8 @@
     <div id="wallet-slot"></div>
   </div>
   <footer>
-  <!-- What opens the wallet. First in the footer, so it is the next thing after
-       the device rather than something found by accident at the edge of the
-       screen. Filled in by wallet-coordinator.js, and left empty on a page that
-       never starts one. -->
-  <div id="wallet-open-slot"></div>
+  <!-- Keep the coordinator's mount point without showing its opener. -->
+  <div id="wallet-open-slot" hidden></div>
   <div class="running-row">
     <div id="firmware-switch" role="group" aria-label="Firmware">
       <span class="label">Firmware</span>
@@ -815,18 +807,10 @@ if (FIRMWARE !== "smartcard") document.getElementById("about-smartcard").remove(
 // worker is inside Python for the life of the page, so there is no unpacking a
 // different wallet underneath it, and the URL is the only thing that carries
 // the choice anyway.
-// Three to choose from, and one of them is not a firmware in the sense the other
-// two are. DoomSigner runs the same smartcard wallet ShieldSigner does; what it
-// changes is what boots first, because the game lives in the OS rather than in
-// the wallet. Putting it in this row anyway is a decision about what a visitor
-// is actually choosing between, which is three things you could flash to a
-// device, not three Python packages. What the row must not do is go on claiming
-// DOOM is running after the unlock has handed the device over: press 1, 2, 3 and
-// the row moves to ShieldSigner, because that is then the truth.
+// Offer the two wallet firmwares. The optional game is not a firmware choice.
 const CHOICES = [
-  { id: "doom", label: "DoomSigner", firmware: "smartcard", doom: true },
-  { id: "smartcard", label: "ShieldSigner", firmware: "smartcard", doom: false },
-  { id: "stock", label: "SeedSigner", firmware: "stock", doom: false },
+  { id: "smartcard", label: "ShieldSigner", firmware: "smartcard" },
+  { id: "stock", label: "SeedSigner", firmware: "stock" },
 ];
 
 // What is running right now, rather than what the URL asked for. The URL cannot
@@ -858,10 +842,8 @@ for (const choice of CHOICES) {
     track.event("page", "firmware-switch", choice.id);
     const params = new URLSearchParams(location.search);
     params.set("firmware", choice.firmware);
-    // wallet=1 is what skips the game, so choosing DoomSigner is choosing not
-    // to skip it. Deleted rather than set to nothing, so the URL stays clean.
-    if (choice.doom) { params.set("doom", "1"); params.delete("wallet"); }
-    else { params.delete("doom"); params.set("wallet", "1"); }
+    params.delete("doom");
+    params.set("wallet", "1");
     location.search = params.toString();  // sets it and reloads
   });
   switchEl.appendChild(button);
