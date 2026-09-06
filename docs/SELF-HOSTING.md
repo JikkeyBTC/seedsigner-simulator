@@ -45,7 +45,10 @@ python3 build/package-pages.py
 ```
 
 The resulting `build/pages/` contains the page, runtime, shims, firmware and a
-root redirect to the smartcard simulator. The output directory must be new or
+root redirect to the smartcard simulator. It also includes the
+[open-source licenses, source and rebuild instructions](../OPEN-SOURCE-LICENSES.md),
+full notices and source archive under `licenses/`. Keep them with every deployment.
+The output directory must be new or
 empty; `--output DIR` selects another directory. GitHub Actions uploads this
 directory as the Pages artifact and publishes it over HTTPS. Visitors need no
 GitHub account, and the simulator runs inside each visitor's browser.
@@ -88,12 +91,16 @@ the two, which is worth installing if you are going to change files here.
 
 ## Running it locally
 
-`test/serve.py` overlays several directories into one document root, so a checkout
-is served without being copied anywhere first:
+Package the site first so the local license links and source downloads work too:
 
 ```sh
-python3 test/serve.py --port 8770 src/web src/shims build/out
+python3 build/package-pages.py --output build/local-public
+python3 test/serve.py --port 8770 build/local-public
 ```
+
+During development, `test/serve.py` also supports overlay roots: use
+`src/web src/shims build/out build/local-public` to serve edited source first
+and the packaged notices as a fallback. Regenerate the package before publishing.
 
 Then open <http://127.0.0.1:8770/>. It binds to `127.0.0.1` by default (`--host` to
 change that) and sends exactly what the page needs:
@@ -111,15 +118,12 @@ there without a certificate.
 
 ## Deploying it
 
-A real web server has one document root, so flatten the same three sources into one
-directory:
+A real web server has one document root. Assemble the complete distribution,
+including its license notices and corresponding source, into a new directory:
 
 ```sh
-mkdir -p /srv/seedsigner-simulator
-cp -r src/web/.  /srv/seedsigner-simulatorulator/     # page, scripts, icons, and pyodide/
-cp src/shims/browser_*.py /srv/seedsigner-simulatorulator/
-cp build/out/wallet-*.zip /srv/seedsigner-simulatorulator/
-cp build/out/wallet-*.build-info.json /srv/seedsigner-simulatorulator/
+python3 build/package-pages.py --output /srv/seedsigner-simulator
+python3 build/check-license-bundle.py /srv/seedsigner-simulator
 ```
 
 What ends up there, and why each piece has to be exactly where it is (the page,

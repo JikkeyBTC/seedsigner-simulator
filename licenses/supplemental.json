@@ -1,0 +1,360 @@
+[
+  {
+    "name": "GNU GPL",
+    "version": "3.0",
+    "license": "GPL-3.0-only",
+    "scope": "license text",
+    "source": "https://github.com/gcc-mirror/gcc/tree/releases/gcc-14.2.0",
+    "source_archive": "https://github.com/gcc-mirror/gcc/archive/releases/gcc-14.2.0.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/GPL-3.0.txt",
+        "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-14.2.0/COPYING3",
+        "archive_member": null,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      }
+    ]
+  },
+  {
+    "name": "GNU LGPL",
+    "version": "3.0",
+    "license": "LGPL-3.0-only",
+    "scope": "license text",
+    "source": "https://github.com/3rdIteration/pysatochip/tree/d77e311e0cd39193c9b2c03a1ab5f69421b8f4d5",
+    "source_archive": "https://github.com/3rdIteration/pysatochip/archive/d77e311e0cd39193c9b2c03a1ab5f69421b8f4d5.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/LGPL-3.0.txt",
+        "url": "https://raw.githubusercontent.com/3rdIteration/pysatochip/d77e311e0cd39193c9b2c03a1ab5f69421b8f4d5/LICENSE",
+        "archive_member": null,
+        "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+      }
+    ]
+  },
+  {
+    "name": "Pyodide",
+    "version": "0.26.4",
+    "license": "MPL-2.0 (root); Apache-2.0 (npm metadata)",
+    "scope": "runtime",
+    "source": "https://github.com/pyodide/pyodide/tree/0.26.4",
+    "source_archive": "https://github.com/pyodide/pyodide/archive/0.26.4.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/Pyodide-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/pyodide/pyodide/0.26.4/LICENSE",
+        "archive_member": null,
+        "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+      }
+    ]
+  },
+  {
+    "name": "CPython",
+    "version": "3.12.1",
+    "license": "PSF-2.0 and bundled notices",
+    "scope": "runtime",
+    "source": "https://github.com/python/cpython/tree/v3.12.1",
+    "source_archive": "https://github.com/python/cpython/archive/v3.12.1.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/CPython-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/python/cpython/v3.12.1/LICENSE",
+        "archive_member": null,
+        "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+      }
+    ]
+  },
+  {
+    "name": "Emscripten runtime",
+    "version": "3.1.58",
+    "license": "MIT OR NCSA; bundled runtime notices",
+    "scope": "runtime",
+    "source": "https://github.com/emscripten-core/emscripten/tree/3.1.58",
+    "source_archive": "https://github.com/emscripten-core/emscripten/archive/3.1.58.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/Emscripten-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/LICENSE",
+        "archive_member": null,
+        "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86"
+      },
+      {
+        "path": "vendor/musl-COPYRIGHT.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/system/lib/libc/musl/COPYRIGHT",
+        "archive_member": null,
+        "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
+      },
+      {
+        "path": "vendor/compiler-rt-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/system/lib/compiler-rt/LICENSE.TXT",
+        "archive_member": null,
+        "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d"
+      },
+      {
+        "path": "vendor/libcxx-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/system/lib/libcxx/LICENSE.TXT",
+        "archive_member": null,
+        "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+      },
+      {
+        "path": "vendor/libcxxabi-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/system/lib/libcxxabi/LICENSE.TXT",
+        "archive_member": null,
+        "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c"
+      },
+      {
+        "path": "vendor/libunwind-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/3.1.58/system/lib/libunwind/LICENSE.TXT",
+        "archive_member": null,
+        "sha256": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d"
+      }
+    ]
+  },
+  {
+    "name": "libffi",
+    "version": "f08493d249d2067c8b3207ba46693dd858f95db3",
+    "license": "MIT",
+    "scope": "runtime",
+    "source": "https://github.com/libffi/libffi/tree/f08493d249d2067c8b3207ba46693dd858f95db3",
+    "source_archive": "https://github.com/libffi/libffi/archive/f08493d249d2067c8b3207ba46693dd858f95db3.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/libffi-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/libffi/libffi/f08493d249d2067c8b3207ba46693dd858f95db3/LICENSE",
+        "archive_member": null,
+        "sha256": "2c9c2acb9743e6b007b91350475308aee44691d96aa20eacef8e199988c8c388"
+      }
+    ]
+  },
+  {
+    "name": "hiwire",
+    "version": "49f3450e34f3f50d4b8296e782dc321bb2e3264e",
+    "license": "MPL-2.0",
+    "scope": "runtime",
+    "source": "https://github.com/hoodmane/hiwire/tree/49f3450e34f3f50d4b8296e782dc321bb2e3264e",
+    "source_archive": "https://github.com/hoodmane/hiwire/archive/49f3450e34f3f50d4b8296e782dc321bb2e3264e.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/hiwire-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/hoodmane/hiwire/49f3450e34f3f50d4b8296e782dc321bb2e3264e/LICENSE",
+        "archive_member": null,
+        "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+      }
+    ]
+  },
+  {
+    "name": "OpenSSL",
+    "version": "1.1.1w (Pyodide filename: 1.1.1n)",
+    "license": "OpenSSL AND SSLeay",
+    "scope": "runtime",
+    "source": "https://github.com/openssl/openssl/tree/OpenSSL_1_1_1w",
+    "source_archive": "https://github.com/openssl/openssl/archive/OpenSSL_1_1_1w.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/OpenSSL-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/openssl/openssl/OpenSSL_1_1_1w/LICENSE",
+        "archive_member": null,
+        "sha256": "c32913b33252e71190af2066f08115c69bc9fddadf3bf29296e20c835389841c"
+      }
+    ]
+  },
+  {
+    "name": "zlib",
+    "version": "1.2.13",
+    "license": "Zlib",
+    "scope": "runtime",
+    "source": "https://github.com/madler/zlib/tree/v1.2.13",
+    "source_archive": "https://github.com/madler/zlib/archive/v1.2.13.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/zlib-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/madler/zlib/v1.2.13/LICENSE",
+        "archive_member": null,
+        "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+      }
+    ]
+  },
+  {
+    "name": "bzip2",
+    "version": "1.0.6",
+    "license": "bzip2-1.0.6",
+    "scope": "runtime",
+    "source": "https://github.com/emscripten-ports/bzip2/tree/1.0.6",
+    "source_archive": "https://github.com/emscripten-ports/bzip2/archive/1.0.6.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/bzip2-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-ports/bzip2/1.0.6/LICENSE",
+        "archive_member": null,
+        "sha256": "4919cfb14a73cd64fcef67b107613970cf1659a09aa675dba31314f373bc7204"
+      }
+    ]
+  },
+  {
+    "name": "FreeType",
+    "version": "Emscripten port version_1",
+    "license": "FTL (selected option)",
+    "scope": "runtime",
+    "source": "https://github.com/emscripten-ports/FreeType/tree/version_1",
+    "source_archive": "https://github.com/emscripten-ports/FreeType/archive/version_1.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/FreeType-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-ports/FreeType/version_1/docs/LICENSE.TXT",
+        "archive_member": null,
+        "sha256": "f6333b3a9106f10190e96d9f994f934deb7a5632851a1aaf846b94651a80f4da"
+      },
+      {
+        "path": "vendor/FreeType-FTL.txt",
+        "url": "https://raw.githubusercontent.com/emscripten-ports/FreeType/version_1/docs/FTL.TXT",
+        "archive_member": null,
+        "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8"
+      }
+    ]
+  },
+  {
+    "name": "libwebp",
+    "version": "1.2.2",
+    "license": "BSD-3-Clause",
+    "scope": "runtime",
+    "source": "https://github.com/webmproject/libwebp/tree/v1.2.2",
+    "source_archive": "https://github.com/webmproject/libwebp/archive/v1.2.2.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/libwebp-COPYING.txt",
+        "url": "https://raw.githubusercontent.com/webmproject/libwebp/v1.2.2/COPYING",
+        "archive_member": null,
+        "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+      },
+      {
+        "path": "vendor/libwebp-PATENTS.txt",
+        "url": "https://raw.githubusercontent.com/webmproject/libwebp/v1.2.2/PATENTS",
+        "archive_member": null,
+        "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c"
+      }
+    ]
+  },
+  {
+    "name": "libtiff",
+    "version": "4.4.0",
+    "license": "libtiff",
+    "scope": "runtime",
+    "source": "https://github.com/libsdl-org/libtiff/tree/v4.4.0",
+    "source_archive": "https://github.com/libsdl-org/libtiff/archive/v4.4.0.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/libtiff-COPYRIGHT.txt",
+        "url": "https://raw.githubusercontent.com/libsdl-org/libtiff/v4.4.0/COPYRIGHT",
+        "archive_member": null,
+        "sha256": "fbd6fed7938541d2c809c0826225fc85e551fdbfa8732b10f0c87e0847acafd7"
+      }
+    ]
+  },
+  {
+    "name": "Font Awesome Free fonts",
+    "version": "6.0.0",
+    "license": "OFL-1.1 (font files)",
+    "scope": "fonts",
+    "source": "https://github.com/FortAwesome/Font-Awesome/tree/6.0.0",
+    "source_archive": "https://github.com/FortAwesome/Font-Awesome/archive/6.0.0.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/Font-Awesome-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.0.0/LICENSE.txt",
+        "archive_member": null,
+        "sha256": "e779748dfe75e84f974df3c7bc07f842011a100159158b0f1f49b2f2a5a515cb"
+      }
+    ]
+  },
+  {
+    "name": "PlemolJP Console",
+    "version": "1.7.1",
+    "license": "OFL-1.1 and included component notices",
+    "scope": "fonts",
+    "source": "https://github.com/yuru7/PlemolJP/tree/v1.7.1",
+    "source_archive": "https://github.com/yuru7/PlemolJP/archive/v1.7.1.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/PlemolJP-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/yuru7/PlemolJP/v1.7.1/LICENSE",
+        "archive_member": null,
+        "sha256": "52bbb5e729acc62435831d20641ece6a919e610100285ba183ef4d7233fb1e9a"
+      },
+      {
+        "path": "vendor/PlemolJP-IBM-Plex-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/yuru7/PlemolJP/v1.7.1/source/LICENSE_IBM-Plex",
+        "archive_member": null,
+        "sha256": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d"
+      },
+      {
+        "path": "vendor/PlemolJP-NerdFonts-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/yuru7/PlemolJP/v1.7.1/source/LICENSE_NerdFonts",
+        "archive_member": null,
+        "sha256": "245b522abb5aba0d8e84898bf6d5e95102620637626106bfd0061189a2370360"
+      }
+    ]
+  },
+  {
+    "name": "SIL Open Font License",
+    "version": "1.1",
+    "license": "OFL-1.1",
+    "scope": "license text",
+    "source": "https://openfontlicense.org/open-font-license-official-text/",
+    "source_archive": "",
+    "notices": [
+      {
+        "path": "vendor/OFL-1.1.txt",
+        "url": "https://openfontlicense.org/documents/OFL.txt",
+        "archive_member": null,
+        "sha256": "1d361a8f8e8ce6e68457dcd93fb56e162e6baa3bbb7e7573a290d44399f6b57e"
+      }
+    ]
+  },
+  {
+    "name": "jsQR",
+    "version": "1.4.0",
+    "license": "Apache-2.0",
+    "scope": "web",
+    "source": "https://www.npmjs.com/package/jsqr/v/1.4.0",
+    "source_archive": "https://registry.npmjs.org/jsqr/-/jsqr-1.4.0.tgz",
+    "notices": [
+      {
+        "path": "vendor/jsQR-LICENSE.txt",
+        "url": "https://registry.npmjs.org/jsqr/-/jsqr-1.4.0.tgz",
+        "archive_member": "package/LICENSE",
+        "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+      }
+    ]
+  },
+  {
+    "name": "libjpeg",
+    "version": "9c",
+    "license": "IJG",
+    "scope": "runtime",
+    "source": "https://github.com/emscripten-core/emscripten/blob/3.1.58/tools/ports/libjpeg.py",
+    "source_archive": "https://storage.googleapis.com/webassembly/emscripten-ports/jpegsrc.v9c.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/libjpeg-README.txt",
+        "url": "https://storage.googleapis.com/webassembly/emscripten-ports/jpegsrc.v9c.tar.gz",
+        "archive_member": "jpeg-9c/README",
+        "sha256": "31f366acfb6259456d9046eb7f16875e387f8bf029d37ac4c4397bf63f22fd6b"
+      }
+    ]
+  },
+  {
+    "name": "libpng",
+    "version": "1.6.39",
+    "license": "libpng-2.0",
+    "scope": "runtime",
+    "source": "https://github.com/emscripten-core/emscripten/blob/3.1.58/tools/ports/libpng.py",
+    "source_archive": "https://storage.googleapis.com/webassembly/emscripten-ports/libpng-1.6.39.tar.gz",
+    "notices": [
+      {
+        "path": "vendor/libpng-LICENSE.txt",
+        "url": "https://storage.googleapis.com/webassembly/emscripten-ports/libpng-1.6.39.tar.gz",
+        "archive_member": "libpng-1.6.39/LICENSE",
+        "sha256": "dfe5a536b0e5a531f844fb9c101a3089aca60772a503893b8e15f9457e369960"
+      }
+    ]
+  }
+]

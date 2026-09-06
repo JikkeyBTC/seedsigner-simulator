@@ -1,5 +1,8 @@
 # SeedSigner simulator
 
+[오픈소스 라이선스 · 고지·소스·재빌드 방법](OPEN-SOURCE-LICENSES.md) ·
+[배포본의 라이선스 목록](https://jikkeybtc.github.io/seedsigner-simulator/licenses/)
+
 [![try it live](https://img.shields.io/badge/try%20it-live-f7931a?style=flat-square)](https://jikkeybtc.github.io/seedsigner-simulator/)
 [![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B12-blue?style=flat-square)](UPSTREAM)
 [![stock](https://img.shields.io/badge/stock-0.8.7-blue?style=flat-square)](UPSTREAM)
@@ -66,7 +69,8 @@ cd seedsigner-simulator
 ./build/fetch-assets.sh              # Pyodide, pinned and hash-checked (~26 MB, once)
 ./build/build-wallet-zip.sh smartcard   # wallet-smartcard.zip, from the pinned commit
 ./build/build-wallet-zip.sh stock       # wallet-stock.zip, from the pinned commit
-python3 test/serve.py --port 8770 src/web src/shims build/out
+python3 build/package-pages.py --output build/public  # includes notices and source
+python3 test/serve.py --port 8770 build/public
 ```
 
 Then open <http://127.0.0.1:8770/>.

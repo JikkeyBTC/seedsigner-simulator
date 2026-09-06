@@ -35,6 +35,8 @@ jobs:
           bash build/build-wallet-zip.sh stock
       - name: Assemble public site
         run: python build/package-pages.py
+      - name: Check distributed license notices and source
+        run: python build/check-license-bundle.py build/pages
       - uses: actions/upload-pages-artifact@v4
         with:
           path: build/pages

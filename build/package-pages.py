@@ -3,6 +3,7 @@
 import argparse
 from pathlib import Path
 import shutil
+from package_licenses import package_licenses
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,13 +24,14 @@ def main():
         if not source.is_file():
             parser.error(f"missing build input: {source.relative_to(ROOT)}")
     shutil.copytree(ROOT / "src/web", output, dirs_exist_ok=True,
-                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "doom.js",
+                                                  "doom.wasm", "doom-run.js", "*.wad"))
     for source in (ROOT / "src/shims").glob("browser_*.py"):
         shutil.copy2(source, output / source.name)
     for source in required[2:]:
         shutil.copy2(source, output / source.name)
-    # DOOM is optional. A fresh wallet-only build needs the same lightweight
-    # placeholder as a local checkout without the separately built engine.
+    # Pages is a wallet-only distribution. Local DOOM builds and WADs have
+    # separate licenses and must not enter this artifact through copytree.
     if not (output / "doom-run.js").exists():
         (output / "doom-run.js").write_text("// DOOM is not included in this wallet-only build.\n", encoding="utf-8")
     (output / ".nojekyll").touch()
@@ -40,6 +42,7 @@ def main():
 <title>직키 시뮬레이터</title></head>
 <body><a href="wallet.html?firmware=smartcard&amp;wallet=1">시뮬레이터 열기</a></body></html>
 ''', encoding="utf-8")
+    package_licenses(ROOT, output)
     print(f"GitHub Pages artifact: {output}")
 
 

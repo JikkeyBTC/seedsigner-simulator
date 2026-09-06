@@ -7,6 +7,8 @@
     "JikKey Simulator": "직키 시뮬레이터",
     "Simulator": "시뮬레이터",
     "Language": "언어 선택",
+    "Open-source licenses": "오픈소스 라이선스",
+    "original source": "원본 소스",
     "About this simulator": "시뮬레이터 알아보기",
     "About this network": "테스트 네트워크 알아보기",
     "More about this": "자세히 알아보기",

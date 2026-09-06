@@ -1,5 +1,8 @@
 # Third-party components
 
+[오픈소스 라이선스 · notices, source and rebuilding](OPEN-SOURCE-LICENSES.md) ·
+[Notices shipped with the public build](https://jikkeybtc.github.io/seedsigner-simulator/licenses/)
+
 Almost none of the code that runs in this simulator was written for it. The
 wallet is upstream SeedSigner, unmodified. The Python interpreter is Pyodide.
 The QR decoder is jsQR. Everything the wallet imports is somebody else's
@@ -232,16 +235,35 @@ differently here than on a real SeedSigner.
 
 ## 5. Copyleft obligations
 
-Two of the redistributed dependencies are LGPL-3.0: **pysatochip** and **PyGP**.
-Both are shipped as unmodified Python source inside `wallet.zip`, which is what
-the licence asks for: the corresponding source is the artifact. Neither is
-modified by this project, and both remain replaceable: the zip is a plain
-archive, and swapping either package for your own build needs nothing more than
-rebuilding it.
+Two redistributed dependencies are LGPL-3.0: **pysatochip** and **PyGP**.
+Their source is shipped inside `wallet-smartcard.zip`. The Pages artifact also
+includes both the GPL-3.0 and LGPL-3.0 texts, a prominent library notice, the
+simulator's corresponding source/build scripts, and instructions for replacing
+either library. Modification and reverse engineering to debug those library
+modifications are not restricted. See [the replacement instructions](OPEN-SOURCE-LICENSES.md#lgpl-라이브러리-수정교체하기).
 
-**certifi** (MPL-2.0) and **Pyodide** (MPL-2.0) are likewise unmodified. Under
-MPL-2.0 the obligation attaches to the covered files themselves, and those files
-are shipped verbatim.
+**certifi**, **Pyodide**, and the runtime's **hiwire** carry MPL-2.0 code.
+Redistributing an unchanged binary still requires recipients to be told how to
+obtain its covered source. The published license page links the exact Pyodide
+tag (including patches and build recipes), hiwire commit, and certifi source.
+The Pyodide root license is MPL-2.0; its npm metadata also names Apache-2.0, so
+both texts are retained rather than relying only on that metadata.
+
+## Supplemental runtime and font notices
+
+The archive tables above do not describe every library statically included in
+the WebAssembly runtime. `licenses/supplemental.json` records additional notices
+for CPython, Emscripten runtime components, libffi, hiwire, OpenSSL, compression
+and image libraries, FreeType and firmware fonts. These inputs follow the
+Pyodide 0.26.4 and Emscripten 3.1.58 recipes. The packager also records each
+actual font's hash and embedded copyright/version fields. No font is relabeled
+MIT merely because it is inside a SeedSigner source tree.
+
+The Pages build collects original notices from both firmware zips and every
+served Pyodide package, adds the checked supplemental texts, and publishes a
+human-readable index, JSON provenance, combined notice text and source archive.
+`build/check-license-bundle.py` checks the packaged links, files and hashes.
+The wallet and runtime archives themselves are copied without modification.
 
 ---
 
