@@ -53,12 +53,12 @@ dd33f4aba83577f8fb7866d2f84972aac1b167fd1f523b8035969373c91c9c10  src/shims/brow
 2c740b578143c67bbca1f950c33fe62d2a06fd22d5c0a7adf58348dc648e09bf  src/web/icon-512.png
 6cd07baa5239a1ab031a811b0ed9d0da47c159c79f626583de466b428038004e  src/web/index.html
 fc3651512dcb372f3c417da35407ce1cbe32479b7467543e8163cd2466465266  src/web/jikkey-card-photo.png
-605dfba849b63cc639556f0190e316408bff921523fe389ceb608edc6f5110e7  src/web/jikkey-i18n.js
+0d879cbd66285ac57a074592e677a40a885c45f58efbca2026ac083cdbe43537  src/web/jikkey-i18n.js
 332bee8eaed568d8b950c42056cd0f7f0addfcec09cb217811ada743ee257cc6  src/web/jikkey-logo.png
 c8f97ed75e4b51bae3ce24259802164af8cc878ffd1f52ec0155573f8f590080  src/web/jikkey-logo.svg
 292c783acb0e91675aa43c6cad221bca66c86b858e10c08b143c020e426d8a99  src/web/jikkey-suede-bright.png
 fbb9f16f8aa6307606dc5e98c756c05a7490049289f2d2658bd063ee92ed9f27  src/web/jikkey-suede.svg
-6f89d3a97c4a5c81273863f1558679fd6b98906e6cde577f00a2b8ac85b5df3a  src/web/jikkey-theme.css
+dc21539f2ff0b0bee28c7028758a81d170183a14a3be2856c892657be6bf0ba7  src/web/jikkey-theme.css
 bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859  src/web/jsQR.js
 38f848ed6ad5c56b1d5bdd3b73498dba9c0b9e56b0d22afb9415b9f9cb3dc618  src/web/manifest.json
 75d7bbeb31dfd951e2d2dcd768f0c42e54faaf10d4fd23f1fa4c50e99abbdc10  src/web/qr-encode.js
@@ -74,7 +74,7 @@ c5ec241be3e6bebb8bf7bda5734b08a91d93dfb75ac3f18794d00f6f259ae933  src/web/wallet
 ebee89297750a166d7374a704abc9c3e9ef60403b4514c6e26fa0911862e3523  src/web/wallet-track.js
 d06e33018e9211ceccc97da162d3dbe06878bdc8dd63ff05b8fe73439f886921  src/web/wallet-tutorial.js
 8157055fe5f076760971a6e1a87a474c1f1ffbaa8943d593897b6e5a6da9875a  src/web/wallet-worker.js
-be388f901b20de73fc3404eb1f66d32f3aafc8855fed526b63370ca5f1efb3a4  src/web/wallet.html
+8f70be1cbef15bcfdde39b8777c8aef5626f4bfaee28cee3b13817e77b914446  src/web/wallet.html
 
 # The stand-in packages, which build/build-wallet-zip.sh copies out of the working
 # tree and into a wallet zip whole. Every other input to that zip is pinned by a
