@@ -316,41 +316,8 @@
      its content and takes the page sideways with it on a narrow phone. The
      cards already know how to shrink; they just have to be told to. */
   #cardtray { max-width: 100%; }
-  /* The one thing on this page that asks for anything, so it is last, after
-     everything the page has to say for itself, and it is one sentence with
-     three words of it clickable.
-
-     A line rather than a button on purpose: the page's voice is a statement of
-     what this is, and the offer is the end of that statement rather than an
-     interruption of it. What makes it the action in the footer is the orange
-     and the underline, which nothing else down here has.
-
-     Hidden in the markup and shown by the script at the foot of this file, on
-     bitsaga.be alone. */
-  #getone {
-    display: flex; justify-content: center;
-    width: 100%; max-width: min(46rem, 100%);
-    border-top: 1px solid #1c2026; padding-top: 1.1rem; margin-top: .2rem;
-  }
-  /* The UA's own display:none for [hidden] loses to the rule above it, so the
-     hidden state has to be said here or the line is on every host. */
+  /* Reveal the purchase link once it matches the resolved firmware. */
   #getone[hidden] { display: none; }
-  /* Balanced, because on a phone this is two lines and the second was one word
-     hanging under the first. Ignored by a browser that has never heard of it,
-     which costs that browser the orphan and nothing else. */
-  #getone p {
-    margin: 0; color: #7c848f; font-size: .95em; text-align: center;
-    text-wrap: balance;
-  }
-  /* Underlined, and thickly enough to be seen at this size against a grey
-     sentence. Offset so the line sits clear of the descenders rather than
-     through them. */
-  #getone a {
-    color: #f7931a; font-weight: 600; text-decoration-line: underline;
-    text-decoration-thickness: 1px; text-underline-offset: .18em;
-  }
-  #getone a:hover { color: #ffa733; text-decoration-thickness: 2px; }
-  #getone a:focus-visible { outline: 2px solid #f7931a; outline-offset: 3px; }
   /* The device, on its own, filling the screen.
 
      The shell is landscape and about twice as wide as it is tall. Fitted to a
@@ -602,18 +569,17 @@
     </div>
   </div>
   <div id="cardtray"></div>
+  <section id="getone" aria-labelledby="getone-title" hidden>
+    <div class="getone-copy">
+      <p class="getone-store">JikKey · Naver Smart Store</p>
+      <h2 id="getone-title"></h2>
+    </div>
+    <a id="getone-link" target="_blank" rel="noopener noreferrer">
+      <span id="getone-label"></span>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </section>
   <p class="license-link"><a href="licenses/" target="_blank" rel="noopener">Open-source licenses</a></p>
-  <!-- Last, and the only thing here asking for anything: one sentence saying
-       what the page has been, with the shop behind three words of it.
-
-       It ships hidden and the script below shows it on bitsaga.be, so what is
-       published and what is served are the same bytes, and a clone of this
-       repository is not left advertising a shop its host does not run. -->
-  <div id="getone" hidden>
-    <p>Everything above is a simulation of
-      <a id="getone-link" href="https://shop.bitsaga.be/bitcoin-products/"
-         target="_blank" rel="noopener">hardware you can buy</a>.</p>
-  </div>
   </footer>
 
 <script src="seedsigner-device.js"></script>
@@ -749,16 +715,30 @@ const doomHint = document.getElementById("doom-hint");
 const cameraHint = document.getElementById("camera-hint");
 const networkEl = document.getElementById("network");
 
-// The shop link in the footer, on the one host that has a shop behind it.
-// Matomo counts an outbound click by itself, having link tracking on; the event
-// beside it carries which firmware was running when it was pressed, which is
-// the part no outlink report can say.
-if (/(^|\.)bitsaga\.be$/i.test(location.hostname)) {
-  document.getElementById("getone").hidden = false;
-  document.getElementById("getone-link").addEventListener("click", () => {
-    track.event("shop", "footer-link", FIRMWARE);
-  });
-}
+// Firmware selection reloads the page, so the offer uses the same resolved
+// firmware as the device. English source strings follow the page's i18n.
+const PRODUCT_INFO = {
+  smartcard: {
+    url: "https://smartstore.naver.com/jikkey/products/13745251982",
+    title: "Get your own ShieldSigner.",
+    label: "Buy ShieldSigner",
+  },
+  stock: {
+    url: "https://smartstore.naver.com/jikkey/products/12383296029",
+    title: "Get your own SeedSigner.",
+    label: "Buy SeedSigner",
+  },
+};
+const product = PRODUCT_INFO[FIRMWARE];
+const purchaseLink = document.getElementById("getone-link");
+purchaseLink.href = product.url;
+document.getElementById("getone-title").textContent = product.title;
+document.getElementById("getone-label").textContent = product.label;
+window.JikKeyI18n?.refresh();
+document.getElementById("getone").hidden = false;
+purchaseLink.addEventListener("click", () => {
+  track.event("shop", "footer-link", FIRMWARE);
+});
 
 // Each boot stage, once, with the milliseconds the visitor had waited by then.
 // Once, because a stage that somehow repeated would otherwise pull its own
@@ -1333,7 +1313,7 @@ if (!window.crossOriginIsolated) {
   function keyEvent(event) {
     const channel = KEYMAP[event.key];
     if (channel === undefined) return;
-    // Except on a control inside the wallet, which wants these keys for itself:
+    // Except on a wallet control or footer link, which wants these keys for itself:
     // Enter presses the button under the cursor, the arrows move within a number
     // field, and swallowing them here would leave the drawer openable by mouse
     // only. A control, not the panel: opening the drawer moves focus into it for
@@ -1343,7 +1323,7 @@ if (!window.crossOriginIsolated) {
     var control = event.target.closest
       && event.target.closest("#wallet input, #wallet textarea, #wallet select,"
                               + " #wallet button, #wallet [contenteditable],"
-                              + " #wallet-button");
+                              + " #wallet-button, #getone-link, .license-link a");
     if (control) return;
     event.preventDefault();
     pressKey(channel, event.type === "keydown");
