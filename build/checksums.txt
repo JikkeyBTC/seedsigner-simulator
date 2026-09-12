@@ -47,12 +47,14 @@ b165ba562b357879fc9b0b478dca9589bb05e4cb4d6f456e93694dc29a16a966  src/shims/brow
 dd33f4aba83577f8fb7866d2f84972aac1b167fd1f523b8035969373c91c9c10  src/shims/browser_hd.py
 2e1b0500e002f33684e9187a9c3d2752f526ce6e78f0e02feea238e92c0dee5b  src/shims/browser_qr.py
 52ade09ad344a558d0ecb38f8cd1232a1caf8bce55048401b28c089583717009  src/shims/browser_touch.py
-0243ccf633097906b763839cd4b2d9f92fccd042bac1fd11ee7be60f31e78687  src/web/apple-touch-icon.png
+e0d2e59bd2bfeb6fb97d6b8060224be5284ff4c0625e2bfa98074da0274a8965  src/web/apple-touch-icon.png
 0493f209d15abeb168ca8c8b705247f9fe4616e34c8dfee0925ae75f3d1c0635  src/web/doom-boot.js
-1ebb8267bb112587c9739a7f30fd9197c3e0137a0fcd4677f6a8677b6fa307f5  src/web/icon-192.png
-2c740b578143c67bbca1f950c33fe62d2a06fd22d5c0a7adf58348dc648e09bf  src/web/icon-512.png
-6cd07baa5239a1ab031a811b0ed9d0da47c159c79f626583de466b428038004e  src/web/index.html
+a2bb76cc11b29408d173f617243d35ac4850c4cd9268ef0b590595b1f6cbe6bf  src/web/favicon.ico
+bedd2318c72296d524e106735646f1feb383a878fee89a29cb7a5ef56d65add3  src/web/icon-192.png
+5402a021ad18c0036f4458609e86c8c14b48f408e5a711483f91676a2f1a2e4f  src/web/icon-512.png
+7946c531fd89202056a9b8e0fb45287c8c8b9b547f3c2d17cbd7f30a7797b74c  src/web/index.html
 fc3651512dcb372f3c417da35407ce1cbe32479b7467543e8163cd2466465266  src/web/jikkey-card-photo.png
+53bbff5823ab3b5a783b9ca720725d4818c54f31625e66ab2e359efcd04e19da  src/web/jikkey-favicon-32.png
 0d879cbd66285ac57a074592e677a40a885c45f58efbca2026ac083cdbe43537  src/web/jikkey-i18n.js
 332bee8eaed568d8b950c42056cd0f7f0addfcec09cb217811ada743ee257cc6  src/web/jikkey-logo.png
 c8f97ed75e4b51bae3ce24259802164af8cc878ffd1f52ec0155573f8f590080  src/web/jikkey-logo.svg
@@ -60,11 +62,11 @@ c8f97ed75e4b51bae3ce24259802164af8cc878ffd1f52ec0155573f8f590080  src/web/jikkey
 fbb9f16f8aa6307606dc5e98c756c05a7490049289f2d2658bd063ee92ed9f27  src/web/jikkey-suede.svg
 dc21539f2ff0b0bee28c7028758a81d170183a14a3be2856c892657be6bf0ba7  src/web/jikkey-theme.css
 bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859  src/web/jsQR.js
-38f848ed6ad5c56b1d5bdd3b73498dba9c0b9e56b0d22afb9415b9f9cb3dc618  src/web/manifest.json
+b6f62c7743d5c97089b1963daf1bbda059191a62295bbb2bf8eff03ad63ad021  src/web/manifest.json
 75d7bbeb31dfd951e2d2dcd768f0c42e54faaf10d4fd23f1fa4c50e99abbdc10  src/web/qr-encode.js
 db254ff250af0d3afef5d746f69aaa19bfeac64d7158cbcfc86937573d7e9aaa  src/web/seedsigner-device.js
 ebdba8ffca304f3637c6633d84a460f1887516a752ca7b8a80cecc7d6c5a4a08  src/web/signet-coordinator.js
-a19eabc9ae72b414b4d7dcc38d2b035cc818b81e8e7dfc3fb09a4d7fce8c3ca7  src/web/sw.js
+f0163741ac1afe15f02b6b71cdd61237261546d60491d8f26236969d10891ad5  src/web/sw.js
 7b4b618d5bf889defaf7fcbdf962c43b9ad3b34ce7c5537d4a1200269ce62127  src/web/ur-decode.js
 29bc2d762982a04c0a731000db63b47e3111783d9d5e8857cb18ba1bfd2108e2  src/web/wallet-camera.js
 e832c8795b3fe082f8420509902847ad5ecd31a11334007db8bec2bad97038e8  src/web/wallet-cards.js
@@ -74,7 +76,7 @@ c5ec241be3e6bebb8bf7bda5734b08a91d93dfb75ac3f18794d00f6f259ae933  src/web/wallet
 ebee89297750a166d7374a704abc9c3e9ef60403b4514c6e26fa0911862e3523  src/web/wallet-track.js
 d06e33018e9211ceccc97da162d3dbe06878bdc8dd63ff05b8fe73439f886921  src/web/wallet-tutorial.js
 8157055fe5f076760971a6e1a87a474c1f1ffbaa8943d593897b6e5a6da9875a  src/web/wallet-worker.js
-8f70be1cbef15bcfdde39b8777c8aef5626f4bfaee28cee3b13817e77b914446  src/web/wallet.html
+a3af1f0ba26eb4eac73085f06de11809ee14e8bd7b9ed6173c56d299e81561d4  src/web/wallet.html
 
 # The stand-in packages, which build/build-wallet-zip.sh copies out of the working
 # tree and into a wallet zip whole. Every other input to that zip is pinned by a

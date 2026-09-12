@@ -39,7 +39,11 @@ def main():
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="0;url=wallet.html?firmware=smartcard&amp;wallet=1">
-<title>직키 시뮬레이터</title></head>
+<title>직키 시뮬레이터</title>
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64">
+<link rel="icon" href="jikkey-favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=pixel-j" sizes="180x180">
+</head>
 <body><a href="wallet.html?firmware=smartcard&amp;wallet=1">시뮬레이터 열기</a></body></html>
 ''', encoding="utf-8")
     package_licenses(ROOT, output)

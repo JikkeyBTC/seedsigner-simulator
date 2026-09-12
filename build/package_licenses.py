@@ -250,6 +250,9 @@ def package_licenses(root, output):
     (base / "index.html").write_text('''<!doctype html>
 <html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>오픈소스 라이선스 · JikKey</title>
+<link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48 64x64">
+<link rel="icon" href="../jikkey-favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=pixel-j" sizes="180x180">
 <style>body{font:16px/1.7 system-ui,sans-serif;color:#242424;background:#fff;margin:0 auto;padding:32px 20px;max-width:1200px}a{color:#8a3700}h1{line-height:1.25}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid #ddd;overflow-wrap:anywhere}th{background:#f5f5f5}.table{overflow:auto}td:nth-child(2){max-width:230px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f6f6;padding:16px}nav a{display:inline-block;margin:0 16px 8px 0}</style>
 <body><a href="../wallet.html?firmware=smartcard&amp;wallet=1">← 시뮬레이터</a>
 <h1>오픈소스 라이선스</h1><p>Open-source licenses, notices and corresponding source</p>
