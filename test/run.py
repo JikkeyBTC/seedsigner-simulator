@@ -62,6 +62,7 @@ SUITE = [
     ("scan_seedqr", ["test_scan.py"], True),
     ("scan_compact", ["test_scan.py"], True),
     ("scan_native", ["test_scan_native.py"], True),
+    ("camera_fallback", ["test_camera_fallback.py"], True),
     ("camera_stall", ["test_camera_stall.py"], True),
     ("password", ["test_password.py"], True),
     ("stock_scan_seedqr", ["test_scan.py"], True),

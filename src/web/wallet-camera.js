@@ -213,7 +213,9 @@
     }
 
     function withJsQR(jsQR) {
+      var lastByteRead = 0;
       function readBytes(imageData) {
+        lastByteRead = Date.now();
         var found = jsQR(imageData.data, imageData.width, imageData.height);
         return found ? Uint8Array.from(found.binaryData) : null;
       }
@@ -230,11 +232,25 @@
         return {
           name: "BarcodeDetector+jsQR",
           read: function (source, imageData) {
-            return native.detect(source).then(function (codes) {
-              // Native says something is there; jsQR is what reads it. If jsQR
-              // disagrees, report nothing and wait for the next frame.
-              return codes.length ? readBytes(imageData) : null;
-            });
+            if (!native) return Promise.resolve(readBytes(imageData));
+
+            // Some mobile browsers expose the native API but fail or hang at
+            // detect(). It is only an accelerator: it must not stop the camera.
+            var timer;
+            return Promise.race([
+              Promise.resolve().then(function () { return native.detect(source); }),
+              new Promise(function (resolve, reject) {
+                timer = setTimeout(function () { reject(new Error("QR detector timeout")); }, 500);
+              }),
+            ]).then(function (codes) {
+              // Native can also miss a binary QR. Recheck with jsQR periodically
+              // even when native reports nothing; only jsQR may supply bytes.
+              return codes.length || Date.now() - lastByteRead >= 500
+                ? readBytes(imageData) : null;
+            }, function () {
+              native = null;
+              return readBytes(imageData);
+            }).finally(function () { clearTimeout(timer); });
           },
         };
       });
