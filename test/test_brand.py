@@ -16,7 +16,8 @@ def main() -> int:
         page = browser.new_context(service_workers="block").new_page()
 
         page.goto(f"{harness.BASE_URL}/index.html", wait_until="domcontentloaded")
-        check("landing title is JikKey", page.title() == "JikKey Simulator", page.title())
+        check("landing title includes JikKey and firmware names",
+              page.title() == "직키 JikKey · SeedSigner·ShieldSigner 시뮬레이터", page.title())
         check("landing shows the supplied logo",
               page.locator("img.brand-logo[alt='JikKey']").count() == 1)
         check("landing accent is JikKey Blue",

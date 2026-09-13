@@ -81,6 +81,8 @@ const SHELL = [
   "./browser_hd.py",
   "./browser_touch.py",
   "./manifest.json",
+  "./robots.txt",
+  "./sitemap.xml",
   "./favicon.ico",
   "./jikkey-favicon-32.png",
   "./apple-touch-icon.png?v=pixel-j",
