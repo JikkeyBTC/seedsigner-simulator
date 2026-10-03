@@ -3,21 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="직키 JikKey의 SeedSigner·ShieldSigner 웹 시뮬레이터. 브라우저에서 기기 화면과 스마트카드 기능을 체험해 보세요.">
-<meta name="robots" content="index, follow">
+<meta name="description" content="직키 JikKey의 시드사이너(SeedSigner)·쉴드사이너(ShieldSigner) 시뮬레이터. 설치 없이 PC와 휴대폰에서 기기 화면, SeedQR 스캔과 SeedKeeper 스마트카드 기능을 체험하세요.">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://jikkeybtc.github.io/seedsigner-simulator/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="직키 JikKey">
-<meta property="og:title" content="직키 JikKey · SeedSigner·ShieldSigner 시뮬레이터">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="직키 JikKey | 시드사이너·쉴드사이너 시뮬레이터">
 <meta property="og:description" content="브라우저에서 SeedSigner와 ShieldSigner를 체험하는 직키 공식 웹 시뮬레이터입니다.">
 <meta property="og:url" content="https://jikkeybtc.github.io/seedsigner-simulator/">
+<meta property="og:image" content="https://jikkeybtc.github.io/seedsigner-simulator/jikkey-card-photo.png">
+<meta property="og:image:alt" content="직키의 SeedKeeper 스마트카드">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="직키 JikKey | SeedSigner·ShieldSigner 시뮬레이터">
+<meta name="twitter:description" content="설치 없이 브라우저에서 시드사이너와 쉴드사이너 기기 화면을 체험하세요.">
+<meta name="twitter:image" content="https://jikkeybtc.github.io/seedsigner-simulator/jikkey-card-photo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "직키 JikKey SeedSigner·ShieldSigner 시뮬레이터",
+  "alternateName": ["JikKey Simulator", "직키 시뮬레이터", "시드사이너 시뮬레이터", "쉴드사이너 시뮬레이터", "SeedSigner Simulator", "ShieldSigner Simulator"],
+  "url": "https://jikkeybtc.github.io/seedsigner-simulator/",
+  "description": "PC와 휴대폰의 브라우저에서 SeedSigner와 ShieldSigner 화면, SeedQR 스캔 및 SeedKeeper 스마트카드 기능을 체험하는 직키의 무료 웹 시뮬레이터입니다.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": ["ko", "en"],
+  "isAccessibleForFree": true,
+  "publisher": {"@type": "Organization", "name": "JikKey", "alternateName": "직키", "url": "https://jikkey.com"}
+}
+</script>
 <!-- One host is named beyond 'self', and only one: signet.bitsaga.be, which is
      the faucet and the read-only chain endpoints of Bitsaga Signet. Nothing
      asks it anything until the simulator wallet is opened or the multisig
      tutorial is started, and the device's own firmware never talks to it at
      all: both of those are the coordinator, on the page, beside the device. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://signet.bitsaga.be; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>JikKey Simulator</title>
+<title>직키 JikKey | 시드사이너·쉴드사이너 시뮬레이터</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64">
 <link rel="icon" href="jikkey-favicon-32.png" type="image/png" sizes="32x32">
@@ -27,6 +49,9 @@
 <meta name="apple-mobile-web-app-title" content="JikKey">
 <style>
   :root { color-scheme: dark; --accent: #0076ff; }
+  #simulator-description { width: min(46rem, 100%); margin: 2rem auto 0; font-size: .9rem; text-align: left; }
+  #simulator-description h2 { margin: 0 0 .5rem; font-size: 1.05rem; line-height: 1.5; }
+  #simulator-description p { margin: .5rem 0; }
   body {
     margin: 0; padding: 2rem 1rem; background: #0b0c0e; color: #d7dbe0;
     font: 15px/1.6 ui-sans-serif, system-ui, sans-serif;
@@ -587,6 +612,12 @@
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </section>
+  <section id="simulator-description" aria-labelledby="simulator-description-title">
+    <h2 id="simulator-description-title">JikKey · SeedSigner and ShieldSigner simulator</h2>
+    <p>Try the SeedSigner and ShieldSigner device screens directly in your browser, on a PC or phone, without an account or installation.</p>
+    <p>Choose SeedSigner for the original firmware, or ShieldSigner for SeedKeeper and Satochip smartcard menus. Practice loading a SeedQR, exploring menus and using the simulated cards.</p>
+    <p>This simulator is for learning. Use test seeds only; never enter a seed that protects real funds.</p>
+  </section>
   <p class="license-link"><a href="licenses/" target="_blank" rel="noopener">Open-source licenses</a></p>
   </footer>
 
@@ -648,8 +679,11 @@ const FIRMWARES = ["stock", "smartcard"];
 const search = new URLSearchParams(location.search);
 const asked = search.get("firmware");
 const FORK_ASKED_FOR = search.has("doom") || search.get("tutorial") !== null;
+// The canonical root opens ShieldSigner, like the previous entry link.
+// Existing wallet.html links retain their default and explicit choices.
+const ROOT_ENTRY = location.pathname.endsWith("/") || location.pathname.endsWith("/index.html");
 const FIRMWARE = FIRMWARES.includes(asked) ? asked
-               : (FORK_ASKED_FOR ? "smartcard" : FIRMWARES[0]);
+               : (ROOT_ENTRY || FORK_ASKED_FOR ? "smartcard" : FIRMWARES[0]);
 
 // The multisig tutorial. It drives the device, the cards and the camera, so it
 // needs a wallet that has just booted and three cards nobody has touched, which

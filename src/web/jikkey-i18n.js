@@ -5,6 +5,11 @@
   "use strict";
   var KO = {
     "JikKey Simulator": "직키 시뮬레이터",
+    "JikKey | SeedSigner & ShieldSigner Simulator": "직키 JikKey | 시드사이너·쉴드사이너 시뮬레이터",
+    "JikKey · SeedSigner and ShieldSigner simulator": "직키 JikKey · 시드사이너(SeedSigner)·쉴드사이너(ShieldSigner)",
+    "Try the SeedSigner and ShieldSigner device screens directly in your browser, on a PC or phone, without an account or installation.": "설치나 회원가입 없이 PC와 휴대폰의 브라우저에서 시드사이너와 쉴드사이너 기기 화면을 바로 체험해 보세요.",
+    "Choose SeedSigner for the original firmware, or ShieldSigner for SeedKeeper and Satochip smartcard menus. Practice loading a SeedQR, exploring menus and using the simulated cards.": "기본 펌웨어는 SeedSigner를, SeedKeeper·Satochip 스마트카드 메뉴는 ShieldSigner를 선택해요. SeedQR 불러오기와 메뉴 조작, 가상 카드 사용을 연습할 수 있어요.",
+    "This simulator is for learning. Use test seeds only; never enter a seed that protects real funds.": "학습용 시뮬레이터예요. 연습용 시드만 사용하고, 실제 자산을 보관하는 시드는 입력하지 마세요.",
     "Simulator": "시뮬레이터",
     "Language": "언어 선택",
     "Open-source licenses": "오픈소스 라이선스",
@@ -412,7 +417,7 @@
     while ((node = walk.nextNode())) {
       if (node.nodeType === 3) textNode(node); else element(node);
     }
-    document.title = t("JikKey Simulator");
+    document.title = t("JikKey | SeedSigner & ShieldSigner Simulator");
     document.querySelectorAll("[data-language]").forEach(function (button) {
       button.setAttribute("aria-pressed", String(button.dataset.language === language));
     });

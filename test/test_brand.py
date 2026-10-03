@@ -1,4 +1,4 @@
-"""JikKey identity on the landing page and simulator chrome."""
+"""Direct simulator entry and JikKey identity in both page languages."""
 
 import os
 import sys
@@ -16,18 +16,17 @@ def main() -> int:
         page = browser.new_context(service_workers="block").new_page()
 
         page.goto(f"{harness.BASE_URL}/index.html", wait_until="domcontentloaded")
-        check("landing title includes JikKey and firmware names",
-              page.title() == "직키 JikKey · SeedSigner·ShieldSigner 시뮬레이터", page.title())
-        check("landing shows the supplied logo",
-              page.locator("img.brand-logo[alt='JikKey']").count() == 1)
-        check("landing accent is JikKey Blue",
-              page.evaluate(
-                  "getComputedStyle(document.documentElement)"
-                  ".getPropertyValue('--accent').trim().toLowerCase()") == "#0076ff")
+        check("entry immediately contains the device", page.locator("#device").count() == 1)
+        check("entry title includes JikKey and both firmware names",
+              page.title() == "직키 JikKey | 시드사이너·쉴드사이너 시뮬레이터", page.title())
+        check("entry shows the supplied logo",
+              page.locator("header img.brand-logo[alt='JikKey']").count() == 1)
+        check("entry has searchable description", page.locator("#simulator-description").count() == 1)
 
         page.goto(f"{harness.BASE_URL}/wallet.html?firmware=stock&lang=en",
                   wait_until="domcontentloaded")
-        check("simulator title is JikKey", page.title() == "JikKey Simulator", page.title())
+        check("English simulator title includes both firmware names",
+              page.title() == "JikKey | SeedSigner & ShieldSigner Simulator", page.title())
         check("simulator shows the supplied logo",
               page.locator("header img.brand-logo[alt='JikKey']").count() == 1)
         switch = page.locator("#firmware-switch").inner_text()
