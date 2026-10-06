@@ -5,6 +5,8 @@
   "use strict";
   var KO = {
     "JikKey Simulator": "직키 시뮬레이터",
+    "Loading…": "불러오는 중…",
+    "Could not start. Refresh to try again.": "시작하지 못했어요. 새로고침해 주세요.",
     "JikKey | SeedSigner & ShieldSigner Simulator": "직키 JikKey | 시드사이너·쉴드사이너 시뮬레이터",
     "JikKey · SeedSigner and ShieldSigner simulator": "직키 JikKey · 시드사이너(SeedSigner)·쉴드사이너(ShieldSigner)",
     "Try the SeedSigner and ShieldSigner device screens directly in your browser, on a PC or phone, without an account or installation.": "설치나 회원가입 없이 PC와 휴대폰의 브라우저에서 시드사이너와 쉴드사이너 기기 화면을 바로 체험해 보세요.",

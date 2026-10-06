@@ -177,6 +177,25 @@
     display: block; width: 100%; height: 100%;
     image-rendering: auto; background: #000;
   }
+  #screen[hidden], #screen-loading[hidden] { display: none; }
+  #screen-loading {
+    box-sizing: border-box; width: min(18rem, 100%); aspect-ratio: 1;
+    margin: 0 auto; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .85rem;
+    background: #fff3e2; color: #3b2515; pointer-events: none;
+    font-size: .85rem; font-weight: 600; text-align: center;
+  }
+  .ssd-screen-slot > #screen-loading {
+    position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%;
+    aspect-ratio: auto;
+  }
+  .loading-mark { position: relative; width: 4rem; height: 4rem; display: grid; place-items: center; }
+  .loading-mark img { width: 2.35rem; height: 2.35rem; image-rendering: pixelated; border-radius: .35rem; }
+  .loading-ring { position: absolute; inset: 0; border: 3px solid #e6ccb1; border-top-color: #ff8508; border-radius: 50%; animation: screen-loading-spin 1s linear infinite; }
+  #screen-loading[data-state="error"] .loading-ring { animation: none; border-color: #e6ccb1; }
+  #screen-loading-label { max-width: 90%; margin: 0; }
+  @keyframes screen-loading-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .loading-ring { animation: none; } }
   /* Out of the flow entirely, in the band the network label already occupies,
      and at the other end of it. Reserving a line for this was the obvious way to
      stop the device stepping down the page while the wallet loaded, and it paid
@@ -534,8 +553,16 @@
        watch the device do it -- needed a scroll each way. -->
   <div id="stage">
     <div id="stage-device">
-      <div id="device"></div>
-      <canvas id="screen" width="240" height="240"></canvas>
+      <div id="device" aria-busy="true">
+        <div id="screen-loading" role="status" aria-live="polite">
+          <div class="loading-mark" aria-hidden="true">
+            <span class="loading-ring"></span>
+            <img src="jikkey-favicon-32.png" alt="" width="32" height="32">
+          </div>
+          <p id="screen-loading-label">Loading…</p>
+        </div>
+      </div>
+      <canvas id="screen" width="240" height="240" hidden></canvas>
       <!-- One band under the device for the two things that are about the
            device rather than on it: what it is doing while it boots, and which
            network it is set to. Under it rather than over it, because the band
@@ -640,9 +667,22 @@
 <script src="wallet-isolation.js"></script>
 <script>
 (async function startSimulatorPage() {
+// Keep the same loader through service-worker setup and every device remount.
+const screenLoading = document.getElementById("screen-loading");
+function showLoadingError() {
+  if (screenLoading.hidden) return;
+  screenLoading.dataset.state = "error";
+  screenLoading.setAttribute("role", "alert");
+  const message = "Could not start. Refresh to try again.";
+  document.getElementById("screen-loading-label").textContent = message;
+  document.getElementById("device").setAttribute("aria-busy", "false");
+}
 // On static hosting the first visit installs isolation, then reloads. Do not
 // allocate shared memory or start a worker until that document is ready.
-if (!await SimulatorIsolation.ready()) return;
+if (!await SimulatorIsolation.ready()) {
+  if (document.getElementById("status").classList.contains("err")) showLoadingError();
+  return;
+}
 
 // The one name the page below uses to count anything, and a set of no-ops when
 // wallet-track.js is not there -- a clone that did not copy it, a blocker that
@@ -1048,6 +1088,8 @@ function mountDevice(width, height) {
     card: false,         // the tray below is what says whether a card is in
   });
   device.screen.appendChild(canvas);
+  device.screen.appendChild(screenLoading);
+  canvas.hidden = false;
 }
 
 let frameImage = null;
@@ -1076,6 +1118,12 @@ function paint(bytes, frameWidth = W, frameHeight = H) {
     frame.data[dst + 3] = 255;
   }
   ctx.putImageData(frame, 0, 0);
+  // A worker can report ready or clear the display before drawing its menu.
+  // Keep the loader until a valid, visible frame has actually been painted.
+  if (!screenLoading.hidden && bytes.some(value => value !== 0)) {
+    screenLoading.hidden = true;
+    deviceEl.setAttribute("aria-busy", "false");
+  }
 }
 
 mountDevice(W, H);
@@ -1217,7 +1265,16 @@ function startWallet() {
   // Said out loud, because more than one thing on the page cares that the game
   // is over: the firmware row stops claiming DoomSigner is what is running.
   dispatchEvent(new Event("seedsigner:wallet-starting"));
-  const worker = new Worker("wallet-worker.js");
+  function failWorker() {
+    showLoadingError();
+    statusEl.textContent = "Could not start. Refresh to try again.";
+    statusEl.className = "err";
+  }
+  let worker;
+  try { worker = new Worker("wallet-worker.js"); }
+  catch (_) { failWorker(); return; }
+  worker.onerror = failWorker;
+  worker.onmessageerror = failWorker;
 
   worker.onmessage = (event) => {
     const { type } = event.data;
@@ -1281,6 +1338,7 @@ function startWallet() {
       networkEl.title = "Bitcoin network: " + event.data.name;
       document.body.classList.toggle("mainnet", event.data.mainnet);
     } else if (type === "error") {
+      showLoadingError();
       statusEl.textContent = "failed: " + event.data.message;
       statusEl.className = "err";
       // The message is the label, so the Events report lists the actual
