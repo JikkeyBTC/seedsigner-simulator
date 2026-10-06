@@ -83,11 +83,12 @@ const SHELL = [
   "./manifest.json",
   "./robots.txt",
   "./sitemap.xml",
-  "./favicon.ico",
-  "./jikkey-favicon-32.png",
-  "./apple-touch-icon.png?v=pixel-j",
-  "./icon-192.png?v=pixel-j",
-  "./icon-512.png?v=pixel-j",
+  "./favicon.ico?v=jk-profile",
+  "./jikkey-favicon-32.png?v=jk-profile",
+  "./jikkey-jk-profile.png",
+  "./apple-touch-icon.png?v=jk-profile",
+  "./icon-192.png?v=jk-profile",
+  "./icon-512.png?v=jk-profile",
   "./jikkey-logo.svg",
 ];
 
