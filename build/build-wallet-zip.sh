@@ -457,7 +457,9 @@ git_checkout() {
     GIT_TERMINAL_PROMPT=0 git -C "${dest}" remote add origin "${url}"
     GIT_TERMINAL_PROMPT=0 git -C "${dest}" fetch --quiet --depth 1 origin "${commit}" \
         || die "could not fetch ${commit} from ${url}"
+    # Preserve the pinned bytes even when the host's Git converts text to CRLF.
     GIT_TERMINAL_PROMPT=0 git -C "${dest}" -c advice.detachedHead=false \
+        -c core.autocrlf=false -c core.eol=lf \
         checkout --quiet FETCH_HEAD
 
     # Only when a sha is what was asked for, which is every row of the dependency
