@@ -46,7 +46,8 @@
     ".ssd-svg{display:block;width:100%;height:auto}",
     ".ssd-slim-crop{position:relative;aspect-ratio:1340/640;overflow:hidden}",
     ".ssd-slim-asset{position:absolute;left:-15.298507%;top:-26.5625%;",
-    "width:132.388060%;height:138.59375%;isolation:isolate;pointer-events:none}",
+    // Keep the masked photo in a stable layer while SVG controls animate.
+    "width:132.388060%;height:138.59375%;isolation:isolate;pointer-events:none;will-change:transform}",
     ".ssd-slim-asset>img{display:block;width:100%;height:100%}",
     ".ssd-slim-mask{position:absolute;width:0;height:0;overflow:hidden}",
     ".ssd-slim-tint{position:absolute;inset:0;pointer-events:none;",
@@ -206,6 +207,14 @@
     });
   }
 
+  function stickGradient(id) {
+    return '<radialGradient id="' + id + '-stick" cx=".4" cy=".32" r=".7">' +
+      '<stop offset="0" stop-color="#34383b"/>' +
+      '<stop offset=".65" stop-color="#24272a"/>' +
+      '<stop offset=".88" stop-color="#16191c"/>' +
+      '<stop offset="1" stop-color="#3e4347"/></radialGradient>';
+  }
+
   function defs(id, L) {
     var u = L.u;
     var space = 'gradientUnits="userSpaceOnUse"';
@@ -213,11 +222,7 @@
       n(L.bodyX + L.bodyW) + '" y2="' + n(L.bodyY + L.bodyH) + '"';
     return [
       "<defs>",
-      '<radialGradient id="', id, '-stick" cx=".4" cy=".32" r=".7">',
-      '<stop offset="0" stop-color="#34383b"/>',
-      '<stop offset=".65" stop-color="#24272a"/>',
-      '<stop offset=".88" stop-color="#16191c"/>',
-      '<stop offset="1" stop-color="#3e4347"/></radialGradient>',
+      stickGradient(id),
       // Shell top face: key light upper-left, falling away to the lower right.
       // Flatter than a glossy consumer shell: the real one is a matte grey.
       '<linearGradient id="', id, '-body" ', space, bodyBox, ">",
@@ -410,7 +415,7 @@
   function padArt(id, L, live) {
     var mm = L.mm, cx = L.padCx, cy = L.padCy;
     var out = [
-      '<circle cx="', n(cx), '" cy="', n(cy), '" r="', n(6.15 * mm),
+      '<circle class="ssd-pad-boundary" cx="', n(cx), '" cy="', n(cy), '" r="', n(6.15 * mm),
       '" fill="#171b1e" stroke="#111416" stroke-width="', n(0.16 * mm), '"/>',
       '<circle cx="', n(cx), '" cy="', n(cy), '" r="', n(5.75 * mm),
       '" fill="none" stroke="#5c646b" stroke-opacity=".38" stroke-width="', n(0.08 * mm), '"/>',
@@ -452,7 +457,11 @@
       '" r="', n(3.05 * mm), '" fill="#000"/>',
       '</g>',
     ].join(""), live));
-    return out.join("");
+    var art = out.join("");
+    // Keep generous invisible hit targets, but never paint pressed/hovered
+    // feedback over the surrounding photographic enclosure.
+    return L.feedbackClip ? art.replace(/class="ssd-(hover|press)"/g,
+      'class="ssd-$1" clip-path="url(#' + L.feedbackClip + ')"') : art;
   }
 
   function keysArt(id, L, live) {
@@ -524,17 +533,8 @@
         shape.replace("SHAPE", 'class="ssd-press" fill="#000"') + '</g>';
     }
 
-    var controls = [];
-    var outer = 90, inner = 40, a = outer / Math.sqrt(2), b = inner / Math.sqrt(2);
-    var sector = "M" + n(449 - a) + " " + n(497 - a) + "A90 90 0 0 1 " +
-      n(449 + a) + " " + n(497 - a) + "L" + n(449 + b) + " " + n(497 - b) +
-      "A40 40 0 0 0 " + n(449 - b) + " " + n(497 - b) + "Z";
-    [["up", "Up", 0], ["right", "Right", 90], ["down", "Down", 180], ["left", "Left", 270]]
-      .forEach(function (key) {
-        controls.push(control(key[0], key[1], '<path d="' + sector +
-          '" transform="rotate(' + key[2] + ' 449 497)" SHAPE/>'));
-      });
-    controls.push(control("select", "Select", '<circle cx="449" cy="497" r="40" SHAPE/>'));
+    var pad = { mm: 15, padCx: 449, padCy: 497, feedbackClip: id + "-pad-feedback" };
+    var controls = [padArt(id, pad, live)];
     controls.push(control("key1", "Key 1", '<path d="M1235 337H1355Q1405 367 1405 404Q1405 430 1378 431H1235Z" SHAPE/>'));
     controls.push(control("key2", "Key 2", '<rect x="1235" y="446" width="170" height="94" SHAPE/>'));
     controls.push(control("key3", "Key 3", '<path d="M1235 556H1377Q1405 556 1405 581Q1405 626 1350 651H1235Z" SHAPE/>'));
@@ -548,6 +548,8 @@
       '<path d="' + clip + '" transform="scale(0.0005636978579 0.001127395716)" clip-rule="evenodd"/></clipPath></defs></svg>' +
       '<svg class="ssd-svg" xmlns="http://www.w3.org/2000/svg" viewBox="205 170 1340 640" role="img">' +
       '<title>JikKey SeedSigner Slim · Black</title>' +
+      '<defs>' + stickGradient(id) + '<clipPath id="' + pad.feedbackClip + '" clipPathUnits="userSpaceOnUse">' +
+      '<circle cx="449" cy="497" r="' + n(6.15 * pad.mm) + '"/></clipPath></defs>' +
       '<rect class="ssd-screen-window" x="675.5" y="278" width="421" height="421" fill="none" pointer-events="none"/>' +
       controls.join("") + '</svg>' +
       '<div class="ssd-screen-slot" style="' + slotStyle + '"></div>' +
