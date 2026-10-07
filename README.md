@@ -4,7 +4,7 @@
 [배포본의 라이선스 목록](https://jikkeybtc.github.io/seedsigner-simulator/licenses/)
 
 [![try it live](https://img.shields.io/badge/try%20it-live-f7931a?style=flat-square)](https://jikkeybtc.github.io/seedsigner-simulator/)
-[![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B12-blue?style=flat-square)](UPSTREAM)
+[![smartcard fork](https://img.shields.io/badge/smartcard%20fork-SeSi--0.8.7%2BShSi--B13-blue?style=flat-square)](UPSTREAM)
 [![stock](https://img.shields.io/badge/stock-0.8.7-blue?style=flat-square)](UPSTREAM)
 [![reproducible-build](https://img.shields.io/github/actions/workflow/status/bitsagarob/seedsigner-simulator/reproducible-build.yml?branch=main&label=reproducible%20build&style=flat-square)](https://github.com/bitsagarob/seedsigner-simulator/actions/workflows/reproducible-build.yml)
 [![tests](https://img.shields.io/github/actions/workflow/status/bitsagarob/seedsigner-simulator/test.yml?branch=main&label=tests&style=flat-square)](https://github.com/bitsagarob/seedsigner-simulator/actions/workflows/test.yml)
@@ -103,8 +103,8 @@ switches to stock and back, and `?firmware=stock` is a link straight to it.
 
 ### ShieldSigner and DIY applets
 
-The smartcard build uses the official `SeSi-0.8.7+ShSi-B12` Python source at
-[`6faaffcb`](https://github.com/3rdIteration/seedsigner/releases/tag/SeSi-0.8.7%2BShSi-B12).
+The smartcard build uses the official `SeSi-0.8.7+ShSi-B13` Python source at
+[`efdd1cfd`](https://github.com/3rdIteration/seedsigner/releases/tag/SeSi-0.8.7%2BShSi-B13).
 It runs in Pyodide with simulated display, input and smartcard interfaces; it
 does not boot the release's Linux disk image or its separate DIY filesystem.
 
@@ -148,14 +148,13 @@ the worked example and what the resulting hashes mean.
   and should be treated as public from the moment it appears there.
 - **Pinned to a release, not a branch tip.** [`UPSTREAM`](UPSTREAM) has a section
   per firmware. Stock is SeedSigner's own tag `0.8.7` (`e0a80d4b…`). The fork is
-  3rdIteration's `SeSi-0.8.7+ShSi-B12` (`6faaffcb…`), which is also the tag the
+  3rdIteration's `SeSi-0.8.7+ShSi-B13` (`efdd1cfd…`), which is also the tag the
   official pi0-smartcard device image is built from, so the fork here and that
   physical device run the same code; stock makes no such claim, because there is
   no such image. A branch tip can be rebased out from under a pin; a tag cannot.
-  Where that image and `requirements.txt` disagree, the image wins: pysatochip is
-  built from the GitHub tag the buildroot recipe names, not from the PyPI version
-  a file the device deletes asks for. The two differ, and the difference showed
-  up here as a card failure that does not exist on hardware.
+  The pysatochip pin matches the GitHub tag the image's buildroot recipe names.
+  B13's `requirements.txt` now pins that same commit. Its older PyPI pin once
+  caused a card failure in the simulator that did not exist on hardware.
 - **You can rebuild either and compare.** `build/build-wallet-zip.sh` reproduces
   a wallet zip byte for byte: fixed timestamps, fixed order, no build host in the
   output. If your hash matches the file a page served you, what you ran was that

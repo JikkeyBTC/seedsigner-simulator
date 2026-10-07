@@ -610,7 +610,7 @@ if _ss_os is not None:
     import seedsigner.controller as _ctrl
     _ctrl.is_seedsigner_os_dev_build = _traced_devbuild
 
-# B12 includes the password-generator and SeedKeeper back-navigation fixes.
+# The pinned release includes the password-generator and SeedKeeper back-navigation fixes.
 # Use the upstream implementations directly, without the former B11 patches.
 
 # --- which Bitcoin network the wallet is set to ------------------------------

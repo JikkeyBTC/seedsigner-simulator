@@ -55,7 +55,7 @@ bb74c5c14e01bb4fca46c0b8d4d966ca90c4e49c38b35d748a9bad82d2c513d3  src/web/icon-1
 22c8fb78c3414548c7dccd913877f247bc0dcdfdc9963b7851888ce3e8b803b9  src/web/index.html
 fc3651512dcb372f3c417da35407ce1cbe32479b7467543e8163cd2466465266  src/web/jikkey-card-photo.png
 6e30694cf6c3676f09948634a769cb36730e16ff589b1a0b7a1afab50ba2a2c9  src/web/jikkey-favicon-32.png
-fe36c432dc4a33a34ec5829558edbb424602dc2756d756cffc13abbc908d90f0  src/web/jikkey-i18n.js
+f074ab7da2dfb9c55a5449dd5249fca59fdeafee4e5da10cc5c0f537a9bec33c  src/web/jikkey-i18n.js
 02ae5323ca8e7a4323630596e7e64af9765037e3a2ffba04e70bb386329dfbaf  src/web/jikkey-jk-profile.png
 332bee8eaed568d8b950c42056cd0f7f0addfcec09cb217811ada743ee257cc6  src/web/jikkey-logo.png
 c8f97ed75e4b51bae3ce24259802164af8cc878ffd1f52ec0155573f8f590080  src/web/jikkey-logo.svg
@@ -80,8 +80,8 @@ e4584eb2db70e77da71d5e33a2859173bf24fd0c6104f14f322a61b0464459c3  src/web/wallet
 c5ec241be3e6bebb8bf7bda5734b08a91d93dfb75ac3f18794d00f6f259ae933  src/web/wallet-touch.js
 ebee89297750a166d7374a704abc9c3e9ef60403b4514c6e26fa0911862e3523  src/web/wallet-track.js
 d06e33018e9211ceccc97da162d3dbe06878bdc8dd63ff05b8fe73439f886921  src/web/wallet-tutorial.js
-8157055fe5f076760971a6e1a87a474c1f1ffbaa8943d593897b6e5a6da9875a  src/web/wallet-worker.js
-81f2c150944097c87eb0697f277f986dbb870d8b0f6daedf4a571d96c6512d88  src/web/wallet.html
+7f3f187ce0738dc037f71bc82d6c3c92a31984b6b1df2330c759950dae55e371  src/web/wallet-worker.js
+3dfa1939cf80f223104856c6770b688a01892e0f27b702448d5ceab5ed172378  src/web/wallet.html
 
 # The stand-in packages, which build/build-wallet-zip.sh copies out of the working
 # tree and into a wallet zip whole. Every other input to that zip is pinned by a

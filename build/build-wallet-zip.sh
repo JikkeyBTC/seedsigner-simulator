@@ -215,12 +215,11 @@ smartcard)
 # ecdsa needs six, which upstream pins but the earlier hand-assembled tree was
 # missing; it is pinned here at upstream's version.
 #
-# pysatochip is the one row whose pin is deliberately NOT the one in upstream's
-# requirements.txt, because the device does not use that file. requirements.txt
-# asks PyPI for pysatochip==0.17.0; the SeedSigner OS image builds
-# 3rdIteration/pysatochip from GitHub at the tag 0.6a through buildroot, and
-# then deletes requirements.txt from the rootfs. Both are in seedsigner-os at
-# the tag whose name matches this firmware's, SeSi-0.8.7+ShSi-B12:
+# pysatochip follows the official device image's buildroot pin. B13 also names
+# this same commit in requirements.txt, replacing its former PyPI 0.17.0 pin.
+# The SeedSigner OS image builds 3rdIteration/pysatochip from GitHub at the tag
+# 0.6a through buildroot, then deletes requirements.txt from the rootfs. Both
+# are in seedsigner-os at the matching tag, SeSi-0.8.7+ShSi-B13:
 #
 #   opt/external-packages/python-pysatochip/python-pysatochip.mk
 #       PYTHON_PYSATOCHIP_VERSION = 0.6a
@@ -255,7 +254,7 @@ pypi|shamir_mnemonic|shamir-mnemonic|0.3.0|https://files.pythonhosted.org/packag
 pypi|six.py|six|1.17.0|https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl|4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274|.
 pypi|typing_extensions.py|typing_extensions|4.14.1|https://files.pythonhosted.org/packages/b5/00/d631e67a838026495268c2f6884f3711a15a9a2a96cd244fdaea53b823fb/typing_extensions-4.14.1-py3-none-any.whl|d1e1e3b58374dc93031d6eda2420a48ea44a36c2b4766a4fdeb3710755731d76|.
 git|pgpy|PGPy-3rdIteration-fork|7cdad000a76ced53c873211241d5ba20019a8488|https://github.com/3rdIteration/PGPy.git|7cdad000a76ced53c873211241d5ba20019a8488|.
-git|pygp|PyGP-3rdIteration-fork|15682ec8fd042b5d0ae3422e9434e9734db6e55b|https://github.com/3rdIteration/pygp.git|15682ec8fd042b5d0ae3422e9434e9734db6e55b|.
+git|pygp|PyGP-3rdIteration-fork|e316f6b427b7d1020cf24d082f28bd7be7d3874c|https://github.com/3rdIteration/pygp.git|e316f6b427b7d1020cf24d082f28bd7be7d3874c|.
 git|pysatochip|pysatochip-3rdIteration|d77e311e0cd39193c9b2c03a1ab5f69421b8f4d5|https://github.com/3rdIteration/pysatochip.git|d77e311e0cd39193c9b2c03a1ab5f69421b8f4d5|.
 git|specter_card|specter-card|06dcde629cdc1057934b434afc46d822c2d2425d|https://github.com/3rdIteration/specter-javacard.git|06dcde629cdc1057934b434afc46d822c2d2425d|py
 git|urtypes|urtypes|7fb280eab3b3563dfc57d2733b0bf5cbc0a96a6a|https://github.com/selfcustody/urtypes.git|7fb280eab3b3563dfc57d2733b0bf5cbc0a96a6a|src
@@ -850,7 +849,7 @@ with zipfile.ZipFile(out_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslev
             manifest.append(f"{hashlib.sha256(data).hexdigest()}  {arcname}")
 
 manifest_text = "\n".join(manifest) + "\n"
-with open(out_manifest, "w", encoding="utf-8") as handle:
+with open(out_manifest, "w", encoding="utf-8", newline="\n") as handle:
     handle.write(manifest_text)
 
 with open(out_zip, "rb") as handle:

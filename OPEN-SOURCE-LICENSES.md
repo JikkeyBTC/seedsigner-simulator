@@ -3,7 +3,7 @@
 이 프로젝트는 [BitsagaRob의 SeedSigner simulator](https://github.com/bitsagarob/seedsigner-simulator)를
 포크해 직키가 수정한 시뮬레이터입니다. 원본의 저작권과 라이선스 고지를 유지합니다.
 직키 수정본에는 기기 외형, 웹 페이지의 한국어·영어 전환, 렌더링, 모바일 조작,
-카드 표시, ShieldSigner B12 선택과 GitHub Pages 배포 구성이 포함됩니다.
+카드 표시, ShieldSigner B13 선택과 GitHub Pages 배포 구성이 포함됩니다.
 
 - 원본 시뮬레이터: **Copyright (c) 2026 BitsagaRob**, [MIT 전문](LICENSE)
 - SeedSigner 및 ShieldSigner의 기반 펌웨어: **Copyright (c) 2021 SeedSigner**, MIT
@@ -23,7 +23,7 @@ MIT는 고지를 유지하는 조건으로 수정·재배포·상업적 이용�
 | 구성요소 | 적용 조건과 소스 위치 |
 | --- | --- |
 | 시뮬레이터와 하드웨어 대체 모듈 | MIT. `LICENSE`를 유지합니다. `licenses/simulator-source.zip`에 배포에 사용한 소스와 빌드 스크립트가 있습니다. |
-| ShieldSigner B12 / SeedSigner 0.8.7 | MIT. 선택한 버전·커밋은 `UPSTREAM`과 `wallet-*.build-info.json`에 기록됩니다. `wallet-smartcard.zip` / `wallet-stock.zip`에 실제 Python 소스와 고지가 들어 있습니다. |
+| ShieldSigner B13 / SeedSigner 0.8.7 | MIT. 선택한 버전·커밋은 `UPSTREAM`과 `wallet-*.build-info.json`에 기록됩니다. `wallet-smartcard.zip` / `wallet-stock.zip`에 실제 Python 소스와 고지가 들어 있습니다. |
 | PyGP / pysatochip | LGPL-3.0. `wallet-smartcard.zip` 안의 `pygp/`와 `pysatochip/`이 실제 실행되는 라이브러리 소스입니다. 수정·교체 방법은 아래에 설명합니다. |
 | Pyodide / hiwire / certifi | MPL-2.0 적용 소스와 해당 수정에는 MPL 조건이 적용됩니다. Pyodide는 0.26.4 태그의 소스·패치·빌드 레시피를 사용합니다. Pyodide의 npm 메타데이터에는 Apache-2.0도 표시되어 있어 두 고지를 보관합니다. |
 | jsQR | Apache-2.0. 배포한 1.4.0 npm 아카이브의 라이선스 전문을 포함합니다. |
