@@ -9,8 +9,9 @@
  * camera, so the same file can dress the live simulator and a marketing page
  * that has none of that. The only way out is the onKey callback.
  *
- * Everything is drawn rather than loaded because the pages using this send a CSP
- * with no external image, font or script origins.
+ * ShieldSigner is drawn from the cover geometry. SeedSigner Slim reuses the
+ * original base image and color mask from jikkey.com/ko/buy/2, served locally
+ * under the same CSP without external image, font or script origins.
  *
  * Lighting is one key from the upper left plus a soft fill. Anything shaded by a
  * gradient of its own would light itself in isolation and break that, so the
@@ -43,6 +44,17 @@
     "touch-action:manipulation;-webkit-tap-highlight-color:transparent;",
     "-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}",
     ".ssd-svg{display:block;width:100%;height:auto}",
+    ".ssd-slim-crop{position:relative;aspect-ratio:1340/640;overflow:hidden}",
+    ".ssd-slim-asset{position:absolute;left:-15.298507%;top:-26.5625%;",
+    "width:132.388060%;height:138.59375%;isolation:isolate;pointer-events:none}",
+    ".ssd-slim-asset>img{display:block;width:100%;height:100%}",
+    ".ssd-slim-mask{position:absolute;width:0;height:0;overflow:hidden}",
+    ".ssd-slim-tint{position:absolute;inset:0;pointer-events:none;",
+    "background-color:#292a2d;background-image:linear-gradient(145deg,#ffffff14,#00000009);",
+    "mix-blend-mode:multiply;",
+    "mask:url(seedsigner-slim-case-mask.png) center/100% 100% no-repeat;",
+    "-webkit-mask:url(seedsigner-slim-case-mask.png) center/100% 100% no-repeat}",
+    ".ssd-slim-crop>.ssd-svg{position:relative;z-index:1}",
     // Percentage geometry, so the cutout tracks the art through any resize.
     ".ssd-screen-slot{position:absolute;z-index:2;overflow:hidden;background:#000}",
     ".ssd-screen-slot>canvas{display:block;width:100%;height:100%;object-fit:contain}",
@@ -479,6 +491,83 @@
     return out.join("");
   }
 
+  // The original base image, case mask and black finish from jikkey.com/ko/buy/2.
+  // Fixed source coordinates register the live square display and all eight
+  // input targets with the photograph at every CSS size, without bitmap edits.
+  function renderSlim(container, o) {
+    var live = o.interactive !== false;
+    var onKey = typeof o.onKey === "function" ? o.onKey : null;
+    var screenH = o.screenHeight > 0 ? o.screenHeight : 240;
+    var scale = o.scale > 0 ? o.scale : 2;
+    var factor = screenH * scale / 421;
+    var id = "ssd" + (++instances);
+    // Crop the transparent photographic margins while retaining its shadows.
+    var crop = { x: 205, y: 170, width: 1340, height: 640 };
+    // Center a true square inside the photographed LCD's wider dark opening.
+    // The original 240x240 firmware pixels and touch coordinates stay square.
+    var screen = { x: 675.5, y: 278, size: 421 };
+    var clip = "M0 0H1774V887H0Z " +
+      "M656 290Q656 278 670 278H1101Q1116 278 1116 292V685Q1116 699 1101 699H670Q656 699 656 685Z " +
+      "M431 302A43 43 0 1 0 345 302A43 43 0 1 0 431 302Z " +
+      "M1471 302A44 44 0 1 0 1383 302A44 44 0 1 0 1471 302Z " +
+      "M431 684A43 43 0 1 0 345 684A43 43 0 1 0 431 684Z " +
+      "M1471 684A44 44 0 1 0 1383 684A44 44 0 1 0 1471 684Z " +
+      "M532 497A83 83 0 1 0 366 497A83 83 0 1 0 532 497Z " +
+      "M1235 431H1378Q1405 430 1405 404Q1405 367 1355 337Q1423 365 1423 409V576Q1423 628 1350 651Q1405 626 1405 581Q1405 556 1377 556H1235V540H1378Q1405 540 1405 514V473Q1405 446 1378 446H1235Z";
+
+    function control(name, label, shape) {
+      return '<g class="ssd-ctl" data-ssd-control="' + name +
+        '" data-ssd-channel="' + CHANNEL[name] + '" role="button" aria-label="' + label + '">' +
+        '<title>' + label + '</title>' +
+        shape.replace("SHAPE", 'fill="transparent"') +
+        shape.replace("SHAPE", 'class="ssd-hover" fill="#fff"') +
+        shape.replace("SHAPE", 'class="ssd-press" fill="#000"') + '</g>';
+    }
+
+    var controls = [];
+    var outer = 90, inner = 40, a = outer / Math.sqrt(2), b = inner / Math.sqrt(2);
+    var sector = "M" + n(449 - a) + " " + n(497 - a) + "A90 90 0 0 1 " +
+      n(449 + a) + " " + n(497 - a) + "L" + n(449 + b) + " " + n(497 - b) +
+      "A40 40 0 0 0 " + n(449 - b) + " " + n(497 - b) + "Z";
+    [["up", "Up", 0], ["right", "Right", 90], ["down", "Down", 180], ["left", "Left", 270]]
+      .forEach(function (key) {
+        controls.push(control(key[0], key[1], '<path d="' + sector +
+          '" transform="rotate(' + key[2] + ' 449 497)" SHAPE/>'));
+      });
+    controls.push(control("select", "Select", '<circle cx="449" cy="497" r="40" SHAPE/>'));
+    controls.push(control("key1", "Key 1", '<path d="M1235 337H1355Q1405 367 1405 404Q1405 430 1378 431H1235Z" SHAPE/>'));
+    controls.push(control("key2", "Key 2", '<rect x="1235" y="446" width="170" height="94" SHAPE/>'));
+    controls.push(control("key3", "Key 3", '<path d="M1235 556H1377Q1405 556 1405 581Q1405 626 1350 651H1235Z" SHAPE/>'));
+
+    var slotStyle = "left:" + pct(screen.x - crop.x, crop.width) + ";top:" + pct(screen.y - crop.y, crop.height) +
+      ";width:" + pct(screen.size, crop.width) + ";height:" + pct(screen.size, crop.height) + ";border-radius:0";
+    container.innerHTML = '<div class="ssd-slim-crop">' +
+      '<div class="ssd-slim-asset"><img src="seedsigner-slim-white.png" alt="" width="1774" height="887" draggable="false">' +
+      '<span class="ssd-slim-tint" style="clip-path:url(#' + id + '-case)"></span></div>' +
+      '<svg class="ssd-slim-mask" aria-hidden="true"><defs><clipPath id="' + id + '-case" clipPathUnits="objectBoundingBox">' +
+      '<path d="' + clip + '" transform="scale(0.0005636978579 0.001127395716)" clip-rule="evenodd"/></clipPath></defs></svg>' +
+      '<svg class="ssd-svg" xmlns="http://www.w3.org/2000/svg" viewBox="205 170 1340 640" role="img">' +
+      '<title>JikKey SeedSigner Slim · Black</title>' +
+      '<rect class="ssd-screen-window" x="675.5" y="278" width="421" height="421" fill="none" pointer-events="none"/>' +
+      controls.join("") + '</svg>' +
+      '<div class="ssd-screen-slot" style="' + slotStyle + '"></div>' +
+      '<div class="ssd-glass" style="' + slotStyle + ';background:linear-gradient(125deg,rgba(255,255,255,.025),transparent 45%)"></div></div>';
+    container.classList.add("ssd-root");
+    container.classList.toggle("ssd-live", live);
+    container.style.width = n(crop.width * factor) + "px";
+    container.style.maxWidth = o.maxWidth ? "min(" + o.maxWidth + ",100%)" : "100%";
+    container.style.setProperty("--ssd-aspect", (crop.width / crop.height).toFixed(6));
+    var svgEl = container.querySelector(".ssd-svg");
+    if (live && onKey) bindControls(svgEl, onKey);
+    return {
+      svg: svgEl,
+      screen: container.querySelector(".ssd-screen-slot"),
+      screenRect: { x: n((screen.x - crop.x) * factor), y: n((screen.y - crop.y) * factor),
+        width: n(screen.size * factor), height: n(screen.size * factor) },
+      width: n(crop.width * factor), height: n(crop.height * factor),
+    };
+  }
+
   function render(container, options) {
     if (!container) throw new Error("SeedSignerDevice.render needs a container element");
     var o = options || {};
@@ -489,6 +578,7 @@
     var onKey = typeof o.onKey === "function" ? o.onKey : null;
 
     injectStyle();
+    if (o.model === "slim") return renderSlim(container, o);
     var id = "ssd" + (++instances);   // gradients and filters must not collide
     var L = layout(screenH, scale, withCard);
 

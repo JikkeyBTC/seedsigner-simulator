@@ -1083,6 +1083,7 @@ function mountDevice(width, height) {
   if (deviceScreen === size) return;
   deviceScreen = size;
   const device = SeedSignerDevice.render(deviceEl, {
+    model: FIRMWARE === "stock" ? "slim" : "shield",
     screenWidth: width, screenHeight: height, interactive: true, onKey: pressKey,
     maxWidth: "68rem",   // the responsive shell scales from the native square panel
     card: false,         // the tray below is what says whether a card is in

@@ -66,10 +66,12 @@ bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859  src/web/jsQR.j
 ff2a7e0dd3e4af7b7580b2b6ca7ad43eae247a4dae6d1571ff0a2bc8b45f5eec  src/web/manifest.json
 75d7bbeb31dfd951e2d2dcd768f0c42e54faaf10d4fd23f1fa4c50e99abbdc10  src/web/qr-encode.js
 411742fc4d879ed2350b5b60ffa117551184cdaae3ac9d6acb94a6794c78bf1f  src/web/robots.txt
-db254ff250af0d3afef5d746f69aaa19bfeac64d7158cbcfc86937573d7e9aaa  src/web/seedsigner-device.js
+10d2c4250e6090606d74685eb553250c50afdd4936f671eb548191bb2894c5e9  src/web/seedsigner-device.js
+9c936618843a810f0c624c7d7e4796a9d148b96c7632fa03d7cd34a28273adff  src/web/seedsigner-slim-case-mask.png
+820cb8aa4a3d12b0b0cf7a809181394f994a92a4b23e9b5a75f098118f19ba2f  src/web/seedsigner-slim-white.png
 ebdba8ffca304f3637c6633d84a460f1887516a752ca7b8a80cecc7d6c5a4a08  src/web/signet-coordinator.js
 0fe24092105602e81452c684a7cd32d6b6dce97d420ab493f3490d80060f0509  src/web/sitemap.xml
-76b582a84addb7e2c88a367c776cab73b2ef6a871b4919fddf2e4fbb996d8e85  src/web/sw.js
+e1afb2e4ec222eb9e8668f86f61a70eb0c8d24ffa440a73711303289e0f2afe3  src/web/sw.js
 7b4b618d5bf889defaf7fcbdf962c43b9ad3b34ce7c5537d4a1200269ce62127  src/web/ur-decode.js
 29bc2d762982a04c0a731000db63b47e3111783d9d5e8857cb18ba1bfd2108e2  src/web/wallet-camera.js
 e832c8795b3fe082f8420509902847ad5ecd31a11334007db8bec2bad97038e8  src/web/wallet-cards.js
@@ -79,7 +81,7 @@ c5ec241be3e6bebb8bf7bda5734b08a91d93dfb75ac3f18794d00f6f259ae933  src/web/wallet
 ebee89297750a166d7374a704abc9c3e9ef60403b4514c6e26fa0911862e3523  src/web/wallet-track.js
 d06e33018e9211ceccc97da162d3dbe06878bdc8dd63ff05b8fe73439f886921  src/web/wallet-tutorial.js
 8157055fe5f076760971a6e1a87a474c1f1ffbaa8943d593897b6e5a6da9875a  src/web/wallet-worker.js
-8f26b8df32119854b6b4008c158aed3e52594259bbdd0bf0fd9b4f335227a772  src/web/wallet.html
+81f2c150944097c87eb0697f277f986dbb870d8b0f6daedf4a571d96c6512d88  src/web/wallet.html
 
 # The stand-in packages, which build/build-wallet-zip.sh copies out of the working
 # tree and into a wallet zip whole. Every other input to that zip is pinned by a

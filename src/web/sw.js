@@ -46,6 +46,8 @@ const SHELL = [
   "./wallet-coordinator.js",
   "./wallet-track.js",
   "./seedsigner-device.js",
+  "./seedsigner-slim-white.png",
+  "./seedsigner-slim-case-mask.png",
   "./jikkey-i18n.js",
   "./jikkey-theme.css",
   "./jikkey-suede.svg",
